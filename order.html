@@ -2,166 +2,143 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ใบสั่งซื้อเสื้อ–หมวก สกร.ระดับอำเภอสตึก</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>สั่งซื้อเสื้อ–หมวก สกร.อำเภอสตึก</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--blue:#1565C0;--blue2:#42A5F5;--line:#9db8d6;--ink:#15324f;--bg:#EAF4FB;--yellow:#FFF59D}
+:root{--blue:#1565C0;--blue2:#42A5F5;--line:#c5dbf0;--ink:#15324f;--bg:#EAF4FB;--yellow:#FFF59D}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--ink);padding:14px;line-height:1.45}
-.sheet{max-width:1000px;margin:0 auto;background:#fff;border-radius:14px;box-shadow:0 8px 26px rgba(40,80,130,.14);padding:22px 18px}
-.head{text-align:center;border-bottom:3px double var(--blue);padding-bottom:12px;margin-bottom:14px}
-.head h1{font-size:1.4rem;color:var(--blue);font-weight:700}
-.head .sub{font-size:.98rem;margin-top:2px}
-.head .price{font-size:.86rem;color:#5a738a;margin-top:6px}
-.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:12px}
-.meta label{font-weight:600;font-size:.95rem;display:flex;align-items:center;gap:6px}
-.meta input{font-family:inherit;font-size:1rem;border:none;border-bottom:1.5px solid var(--line);padding:4px 6px;background:transparent;color:var(--ink);min-width:120px}
-.meta input:focus{outline:none;border-bottom-color:var(--blue)}
-.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;margin-bottom:8px;min-width:720px}
-th,td{border:1px solid var(--line);padding:6px;font-size:.94rem;text-align:center}
-th{background:var(--blue);color:#fff;font-weight:600;line-height:1.25}
-th small{font-weight:400;font-size:.78rem;opacity:.9}
-.col-no{width:42px}.col-name{min-width:170px;text-align:left}
-.col-item{width:110px}.col-sum{width:110px}.col-del{width:40px}
-td.name-cell{text-align:left}
-td input.nm{width:100%;border:none;font-family:inherit;font-size:1rem;background:transparent;color:var(--ink);padding:3px}
-td input.nm:focus{outline:2px solid var(--blue2);outline-offset:-2px;border-radius:4px}
-select.size{width:100%;font-family:inherit;font-size:.95rem;border:1px solid #d6c200;border-radius:7px;padding:5px 4px;background:var(--yellow);color:var(--ink);font-weight:600}
-select.size:focus{outline:2px solid #d6c200;outline-offset:-1px}
-.hat-cell input{width:20px;height:20px;accent-color:var(--blue);cursor:pointer}
-.rowsum{font-weight:600}
-.sumcell{background:#f5f9fd}
-.del-btn{background:#ef4444;color:#fff;border:none;border-radius:8px;width:28px;height:28px;font-size:.95rem;cursor:pointer;font-weight:700}
-.total-row td{background:#dbeafe;font-weight:700}
-.total-row .lbl{text-align:right}
-.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.btn{flex:1;min-width:140px;border:none;border-radius:12px;padding:13px;font-family:inherit;font-size:1rem;font-weight:700;color:#fff;cursor:pointer;background:linear-gradient(120deg,var(--blue),var(--blue2));box-shadow:0 5px 14px rgba(21,101,192,.3)}
-.btn.add{background:linear-gradient(120deg,#22c55e,#15803d)}
-.btn.clear{background:linear-gradient(120deg,#94a3b8,#64748b);flex:0 0 auto;min-width:auto;padding:13px 16px}
-.summary{margin-top:16px;background:#f5f9fd;border:1px solid var(--line);border-radius:12px;padding:14px}
-.summary h3{font-size:1.05rem;color:var(--blue);margin-bottom:8px}
-.summary .line{font-size:.95rem;margin:4px 0}
-.summary .grand{font-size:1.15rem;font-weight:700;color:var(--blue);margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
-.note{font-size:.84rem;color:#5a738a;margin-top:10px;text-align:center}
-@media print{
-  body{background:#fff;padding:0}
-  .sheet{box-shadow:none;border-radius:0;max-width:100%;padding:8mm}
-  .btns,.del-btn,.col-del,.note{display:none!important}
-  .scroll{overflow:visible}table{min-width:0}
-  .meta input{border:none}
-  th,select.size,.total-row td,.summary{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  select.size{border:none;-webkit-appearance:none;appearance:none}
-  @page{size:A4 landscape;margin:10mm}
-}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--ink);padding:16px;line-height:1.5}
+.card{max-width:520px;margin:0 auto;background:#fff;border-radius:18px;box-shadow:0 8px 26px rgba(40,80,130,.15);padding:22px 20px}
+.head{text-align:center;border-bottom:3px double var(--blue);padding-bottom:12px;margin-bottom:16px}
+.head h1{font-size:1.3rem;color:var(--blue);font-weight:700}
+.head .sub{font-size:.92rem;margin-top:3px}
+.head .price{font-size:.82rem;color:#5a738a;margin-top:6px}
+label{display:block;font-weight:600;font-size:.96rem;margin:14px 0 5px}
+input[type=text]{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:1rem;background:#fff;color:var(--ink);outline:none}
+input[type=text]:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(21,101,192,.13)}
+.item{display:flex;align-items:center;gap:10px;background:#f5f9fd;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:9px}
+.item .nm{flex:1;font-weight:600;font-size:.96rem}
+.item .nm small{display:block;font-weight:400;color:#5a738a;font-size:.8rem}
+select.size,input.qty{font-family:inherit;font-size:1rem;border:1px solid #d6c200;border-radius:10px;padding:9px 8px;background:var(--yellow);color:var(--ink);font-weight:600;min-width:96px;text-align:center}
+select.size:focus,input.qty:focus{outline:2px solid #d6c200;outline-offset:-1px}
+input.qty{width:96px}
+.total{margin-top:18px;background:var(--blue);color:#fff;border-radius:14px;padding:14px 16px;text-align:center;font-size:1.2rem;font-weight:700;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.btn{display:block;width:100%;border:none;border-radius:14px;padding:15px;font-family:inherit;font-size:1.05rem;font-weight:700;color:#fff;cursor:pointer;margin-top:12px;box-shadow:0 6px 16px rgba(21,101,192,.3)}
+.btn.send{background:linear-gradient(120deg,#06C755,#04a544)}
+.btn.print{background:linear-gradient(120deg,var(--blue),var(--blue2))}
+.note{font-size:.83rem;color:#5a738a;margin-top:12px;text-align:center}
+.ok{display:none;text-align:center;padding:20px}
+.ok .big{font-size:3rem}.ok h2{color:#15803d;margin:8px 0}
+@media print{.btn,.note{display:none}body{background:#fff}.card{box-shadow:none}}
 </style>
 </head>
 <body>
-<div class="sheet">
+<div class="card" id="form">
   <div class="head">
-    <h1>ใบสั่งซื้อเสื้อ–หมวก</h1>
-    <div class="sub">ศูนย์ส่งเสริมการเรียนรู้ระดับอำเภอสตึก (ภาพรวมระดับอำเภอ)</div>
-    <div class="price">คอปก 290 บาท • คอกลม 190 บาท • แจ็กเก็ต 679 บาท • หมวก 130 บาท</div>
+    <h1>👕 สั่งซื้อเสื้อ–หมวก</h1>
+    <div class="sub">ศูนย์ส่งเสริมการเรียนรู้ระดับอำเภอสตึก</div>
+    <div class="price">คอปก 290 • คอกลม 190 • แจ็กเก็ต 679 • หมวก 130 บาท</div>
   </div>
 
-  <div class="meta">
-    <label>ผู้รวบรวม: <input id="buyer" placeholder="ชื่อ-นามสกุล"></label>
-    <label>วันที่: <input id="date"></label>
+  <label>ชื่อ-นามสกุล *</label>
+  <input type="text" id="name" placeholder="กรอกชื่อ-นามสกุล">
+
+  <label>เลือกรายการ (เลือกไซส์ในช่องสีเหลือง / ไม่เอาเลือก "—")</label>
+
+  <div class="item">
+    <div class="nm">เสื้อคอปก <small>290 บาท</small></div>
+    <select class="size" id="polo"></select>
+  </div>
+  <div class="item">
+    <div class="nm">เสื้อคอกลม <small>190 บาท</small></div>
+    <select class="size" id="round"></select>
+  </div>
+  <div class="item">
+    <div class="nm">แจ็กเก็ต <small>679 บาท</small></div>
+    <select class="size" id="jacket"></select>
+  </div>
+  <div class="item">
+    <div class="nm">หมวก <small>130 บาท/ใบ</small></div>
+    <input class="qty" id="hat" inputmode="numeric" value="0">
   </div>
 
-  <div class="scroll">
-  <table id="tbl">
-    <thead>
-      <tr>
-        <th class="col-no">ลำดับ</th>
-        <th class="col-name">ชื่อ-นามสกุล</th>
-        <th class="col-item">เสื้อคอปก<br><small>(290) เลือกไซส์</small></th>
-        <th class="col-item">เสื้อคอกลม<br><small>(190) เลือกไซส์</small></th>
-        <th class="col-item">แจ็กเก็ต<br><small>(679) เลือกไซส์</small></th>
-        <th class="col-item">หมวก<br><small>(130) ติ๊กเลือก</small></th>
-        <th class="col-sum">รวมเงิน (บาท)</th>
-        <th class="col-del">ลบ</th>
-      </tr>
-    </thead>
-    <tbody id="rows"></tbody>
-    <tfoot>
-      <tr class="total-row">
-        <td colspan="6" class="lbl">รวมเป็นเงินทั้งสิ้น</td>
-        <td class="sumcell" id="grand">0.00</td>
-        <td></td>
-      </tr>
-    </tfoot>
-  </table>
-  </div>
+  <div class="total" id="total">รวมเป็นเงิน 0 บาท</div>
 
-  <div class="btns">
-    <button class="btn add" onclick="addRow()">➕ เพิ่มรายชื่อ</button>
-    <button class="btn" onclick="window.print()">🖨️ ปริ้น / บันทึก PDF</button>
-    <button class="btn clear" onclick="clearAll()">🗑️ ล้าง</button>
-  </div>
-  <p class="note">พิมพ์ชื่อในแนวตั้ง • เลือกไซส์ในช่องสีเหลือง (เว้นว่าง = ไม่เอา) • หมวกติ๊กถูก • ยอดรวมคิดอัตโนมัติ</p>
+  <button class="btn send" onclick="submitOrder()">📤 ส่งคำสั่งซื้อ</button>
+  <button class="btn print" onclick="window.print()">🖨️ ปริ้นใบของฉัน</button>
+  <p class="note">เมื่อกด "ส่งคำสั่งซื้อ" ข้อมูลจะถูกบันทึกเข้าระบบส่วนกลางอัตโนมัติ (ต้องมีอินเทอร์เน็ต)</p>
+</div>
 
-  <div class="summary" id="summary"></div>
+<div class="card ok" id="okScreen">
+  <div class="big">✅</div>
+  <h2>ส่งคำสั่งซื้อเรียบร้อย!</h2>
+  <p id="okMsg"></p>
+  <button class="btn send" onclick="resetForm()" style="margin-top:18px">➕ สั่งซื้อเพิ่มอีกคน</button>
 </div>
 
 <script>
+/* ===== Google Form (สั่งซื้อเสื้อ-หมวก) ===== */
+const CONFIG={
+  action:"https://docs.google.com/forms/d/e/1FAIpQLScUnvKFngDAudffJjSNCfp2ePRTaF8LggOOtoyg77E8UPp4_A/formResponse",
+  e:{ name:"entry.30884641", polo:"entry.1071808514", round:"entry.1885482838",
+      jacket:"entry.1030051653", hat:"entry.1758982973", total:"entry.563862767" }
+};
 const SIZES=['S','M','L','XL','2XL','3XL','4XL','5XL','6XL'];
 const PRICE={polo:290,round:190,jacket:679,hat:130};
-const rows=document.getElementById('rows');
-function fmt(n){return (isNaN(n)?0:n).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}
-function sizeSelect(cls){
-  return `<select class="size ${cls}"><option value="">-</option>`+SIZES.map(s=>`<option>${s}</option>`).join('')+`</select>`;
-}
-function addRow(){
-  const tr=document.createElement('tr');
-  tr.innerHTML=`<td class="col-no"></td>
-    <td class="name-cell"><input class="nm" placeholder="พิมพ์ชื่อ-นามสกุล"></td>
-    <td>${sizeSelect('polo')}</td>
-    <td>${sizeSelect('round')}</td>
-    <td>${sizeSelect('jacket')}</td>
-    <td class="hat-cell"><input type="checkbox" class="hat"></td>
-    <td class="col-sum sumcell"><span class="rowsum">0.00</span></td>
-    <td class="col-del"><button class="del-btn" onclick="this.closest('tr').remove();renumber();calc()">✕</button></td>`;
-  rows.appendChild(tr);
-  tr.querySelectorAll('.size,.hat').forEach(el=>el.addEventListener('change',calc));
-  renumber();calc();
-}
-function renumber(){[...rows.children].forEach((tr,i)=>tr.querySelector('.col-no').textContent=i+1)}
+
+['polo','round','jacket'].forEach(id=>{
+  const sel=document.getElementById(id);
+  sel.innerHTML='<option value="">—</option>'+SIZES.map(s=>`<option>${s}</option>`).join('');
+  sel.addEventListener('change',calc);
+});
+document.getElementById('hat').addEventListener('input',calc);
+
 function calc(){
-  let grand=0;
-  const tally={polo:{},round:{},jacket:{}};
-  const count={polo:0,round:0,jacket:0,hat:0};
-  [...rows.children].forEach(tr=>{
-    let s=0;
-    ['polo','round','jacket'].forEach(k=>{
-      const v=tr.querySelector('.'+k).value;
-      if(v){s+=PRICE[k];count[k]++;tally[k][v]=(tally[k][v]||0)+1}
-    });
-    if(tr.querySelector('.hat').checked){s+=PRICE.hat;count.hat++}
-    tr.querySelector('.rowsum').textContent=fmt(s);
-    grand+=s;
-  });
-  document.getElementById('grand').textContent=fmt(grand);
-  renderSummary(count,tally,grand);
+  let t=0;
+  ['polo','round','jacket'].forEach(k=>{if(document.getElementById(k).value)t+=PRICE[k]});
+  const hq=parseInt(document.getElementById('hat').value)||0;
+  t+=hq*PRICE.hat;
+  document.getElementById('total').textContent='รวมเป็นเงิน '+t.toLocaleString('th-TH')+' บาท';
+  return t;
 }
-function sizeStr(obj){
-  const parts=SIZES.filter(s=>obj[s]).map(s=>`${s}=${obj[s]}`);
-  return parts.length?parts.join('  '):'-';
+function submitOrder(){
+  const name=document.getElementById('name').value.trim();
+  if(!name){alert('กรุณากรอกชื่อ-นามสกุลค่ะ');return}
+  const polo=document.getElementById('polo').value||'-';
+  const round=document.getElementById('round').value||'-';
+  const jacket=document.getElementById('jacket').value||'-';
+  const hat=parseInt(document.getElementById('hat').value)||0;
+  const total=calc();
+  if(polo==='-'&&round==='-'&&jacket==='-'&&hat===0){alert('กรุณาเลือกรายการอย่างน้อย 1 อย่างค่ะ');return}
+  const fd=new URLSearchParams();
+  fd.append(CONFIG.e.name,name);
+  fd.append(CONFIG.e.polo,polo);
+  fd.append(CONFIG.e.round,round);
+  fd.append(CONFIG.e.jacket,jacket);
+  fd.append(CONFIG.e.hat,hat);
+  fd.append(CONFIG.e.total,total);
+  fetch(CONFIG.action,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()})
+    .then(()=>showOk(name,polo,round,jacket,hat,total))
+    .catch(()=>showOk(name,polo,round,jacket,hat,total));
 }
-function renderSummary(count,tally,grand){
-  document.getElementById('summary').innerHTML=
-    `<h3>📊 สรุปยอดสั่งซื้อ (สำหรับสั่งของ)</h3>
-     <div class="line"><b>เสื้อคอปก:</b> ${count.polo} ตัว &nbsp;|&nbsp; ไซส์: ${sizeStr(tally.polo)}</div>
-     <div class="line"><b>เสื้อคอกลม:</b> ${count.round} ตัว &nbsp;|&nbsp; ไซส์: ${sizeStr(tally.round)}</div>
-     <div class="line"><b>แจ็กเก็ต:</b> ${count.jacket} ตัว &nbsp;|&nbsp; ไซส์: ${sizeStr(tally.jacket)}</div>
-     <div class="line"><b>หมวก:</b> ${count.hat} ใบ</div>
-     <div class="grand">💰 รวมเป็นเงินทั้งสิ้น ${fmt(grand)} บาท</div>`;
+function showOk(name,polo,round,jacket,hat,total){
+  document.getElementById('okMsg').innerHTML=
+    `<b>${name}</b><br>คอปก: ${polo} • คอกลม: ${round} • แจ็กเก็ต: ${jacket} • หมวก: ${hat} ใบ<br>รวม ${total.toLocaleString('th-TH')} บาท`;
+  document.getElementById('form').style.display='none';
+  document.getElementById('okScreen').style.display='block';
+  window.scrollTo(0,0);
 }
-function clearAll(){if(confirm('ล้างรายชื่อทั้งหมด?')){rows.innerHTML='';for(let i=0;i<8;i++)addRow();}}
-// เริ่มต้น 8 แถวให้พิมพ์ได้เลย
-for(let i=0;i<8;i++)addRow();
-document.getElementById('date').value=new Date().toLocaleDateString('th-TH',{day:'2-digit',month:'2-digit',year:'numeric'});
+function resetForm(){
+  document.getElementById('name').value='';
+  ['polo','round','jacket'].forEach(k=>document.getElementById(k).value='');
+  document.getElementById('hat').value='0';calc();
+  document.getElementById('okScreen').style.display='none';
+  document.getElementById('form').style.display='block';
+  window.scrollTo(0,0);
+}
+calc();
 </script>
 </body>
 </html>
