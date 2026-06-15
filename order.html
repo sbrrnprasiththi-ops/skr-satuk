@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ใบสั่งซื้อเสื้อ–หมวก สกร.ระดับอำเภอสตึก</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1565C0;--blue2:#42A5F5;--line:#9db8d6;--ink:#15324f;--bg:#EAF4FB;--yellow:#FFF59D}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--ink);padding:14px;line-height:1.45}
+.sheet{max-width:1000px;margin:0 auto;background:#fff;border-radius:14px;box-shadow:0 8px 26px rgba(40,80,130,.14);padding:22px 18px}
+.head{text-align:center;border-bottom:3px double var(--blue);padding-bottom:12px;margin-bottom:14px}
+.head h1{font-size:1.4rem;color:var(--blue);font-weight:700}
+.head .sub{font-size:.98rem;margin-top:2px}
+.head .price{font-size:.86rem;color:#5a738a;margin-top:6px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:12px}
+.meta label{font-weight:600;font-size:.95rem;display:flex;align-items:center;gap:6px}
+.meta input{font-family:inherit;font-size:1rem;border:none;border-bottom:1.5px solid var(--line);padding:4px 6px;background:transparent;color:var(--ink);min-width:120px}
+.meta input:focus{outline:none;border-bottom-color:var(--blue)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;margin-bottom:8px;min-width:720px}
+th,td{border:1px solid var(--line);padding:6px;font-size:.94rem;text-align:center}
+th{background:var(--blue);color:#fff;font-weight:600;line-height:1.25}
+th small{font-weight:400;font-size:.78rem;opacity:.9}
+.col-no{width:42px}.col-name{min-width:170px;text-align:left}
+.col-item{width:110px}.col-sum{width:110px}.col-del{width:40px}
+td.name-cell{text-align:left}
+td input.nm{width:100%;border:none;font-family:inherit;font-size:1rem;background:transparent;color:var(--ink);padding:3px}
+td input.nm:focus{outline:2px solid var(--blue2);outline-offset:-2px;border-radius:4px}
+select.size{width:100%;font-family:inherit;font-size:.95rem;border:1px solid #d6c200;border-radius:7px;padding:5px 4px;background:var(--yellow);color:var(--ink);font-weight:600}
+select.size:focus{outline:2px solid #d6c200;outline-offset:-1px}
+.hat-cell input{width:20px;height:20px;accent-color:var(--blue);cursor:pointer}
+.rowsum{font-weight:600}
+.sumcell{background:#f5f9fd}
+.del-btn{background:#ef4444;color:#fff;border:none;border-radius:8px;width:28px;height:28px;font-size:.95rem;cursor:pointer;font-weight:700}
+.total-row td{background:#dbeafe;font-weight:700}
+.total-row .lbl{text-align:right}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{flex:1;min-width:140px;border:none;border-radius:12px;padding:13px;font-family:inherit;font-size:1rem;font-weight:700;color:#fff;cursor:pointer;background:linear-gradient(120deg,var(--blue),var(--blue2));box-shadow:0 5px 14px rgba(21,101,192,.3)}
+.btn.add{background:linear-gradient(120deg,#22c55e,#15803d)}
+.btn.clear{background:linear-gradient(120deg,#94a3b8,#64748b);flex:0 0 auto;min-width:auto;padding:13px 16px}
+.summary{margin-top:16px;background:#f5f9fd;border:1px solid var(--line);border-radius:12px;padding:14px}
+.summary h3{font-size:1.05rem;color:var(--blue);margin-bottom:8px}
+.summary .line{font-size:.95rem;margin:4px 0}
+.summary .grand{font-size:1.15rem;font-weight:700;color:var(--blue);margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.note{font-size:.84rem;color:#5a738a;margin-top:10px;text-align:center}
+@media print{
+  body{background:#fff;padding:0}
+  .sheet{box-shadow:none;border-radius:0;max-width:100%;padding:8mm}
+  .btns,.del-btn,.col-del,.note{display:none!important}
+  .scroll{overflow:visible}table{min-width:0}
+  .meta input{border:none}
+  th,select.size,.total-row td,.summary{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  select.size{border:none;-webkit-appearance:none;appearance:none}
+  @page{size:A4 landscape;margin:10mm}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="head">
+    <h1>ใบสั่งซื้อเสื้อ–หมวก</h1>
+    <div class="sub">ศูนย์ส่งเสริมการเรียนรู้ระดับอำเภอสตึก (ภาพรวมระดับอำเภอ)</div>
+    <div class="price">คอปก 290 บาท • คอกลม 190 บาท • แจ็กเก็ต 679 บาท • หมวก 130 บาท</div>
+  </div>
+
+  <div class="meta">
+    <label>ผู้รวบรวม: <input id="buyer" placeholder="ชื่อ-นามสกุล"></label>
+    <label>วันที่: <input id="date"></label>
+  </div>
+
+  <div class="scroll">
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th class="col-no">ลำดับ</th>
+        <th class="col-name">ชื่อ-นามสกุล</th>
+        <th class="col-item">เสื้อคอปก<br><small>(290) เลือกไซส์</small></th>
+        <th class="col-item">เสื้อคอกลม<br><small>(190) เลือกไซส์</small></th>
+        <th class="col-item">แจ็กเก็ต<br><small>(679) เลือกไซส์</small></th>
+        <th class="col-item">หมวก<br><small>(130) ติ๊กเลือก</small></th>
+        <th class="col-sum">รวมเงิน (บาท)</th>
+        <th class="col-del">ลบ</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="6" class="lbl">รวมเป็นเงินทั้งสิ้น</td>
+        <td class="sumcell" id="grand">0.00</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+  </div>
+
+  <div class="btns">
+    <button class="btn add" onclick="addRow()">➕ เพิ่มรายชื่อ</button>
+    <button class="btn" onclick="window.print()">🖨️ ปริ้น / บันทึก PDF</button>
+    <button class="btn clear" onclick="clearAll()">🗑️ ล้าง</button>
+  </div>
+  <p class="note">พิมพ์ชื่อในแนวตั้ง • เลือกไซส์ในช่องสีเหลือง (เว้นว่าง = ไม่เอา) • หมวกติ๊กถูก • ยอดรวมคิดอัตโนมัติ</p>
+
+  <div class="summary" id="summary"></div>
+</div>
+
+<script>
+const SIZES=['S','M','L','XL','2XL','3XL','4XL','5XL','6XL'];
+const PRICE={polo:290,round:190,jacket:679,hat:130};
+const rows=document.getElementById('rows');
+function fmt(n){return (isNaN(n)?0:n).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function sizeSelect(cls){
+  return `<select class="size ${cls}"><option value="">-</option>`+SIZES.map(s=>`<option>${s}</option>`).join('')+`</select>`;
+}
+function addRow(){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td class="col-no"></td>
+    <td class="name-cell"><input class="nm" placeholder="พิมพ์ชื่อ-นามสกุล"></td>
+    <td>${sizeSelect('polo')}</td>
+    <td>${sizeSelect('round')}</td>
+    <td>${sizeSelect('jacket')}</td>
+    <td class="hat-cell"><input type="checkbox" class="hat"></td>
+    <td class="col-sum sumcell"><span class="rowsum">0.00</span></td>
+    <td class="col-del"><button class="del-btn" onclick="this.closest('tr').remove();renumber();calc()">✕</button></td>`;
+  rows.appendChild(tr);
+  tr.querySelectorAll('.size,.hat').forEach(el=>el.addEventListener('change',calc));
+  renumber();calc();
+}
+function renumber(){[...rows.children].forEach((tr,i)=>tr.querySelector('.col-no').textContent=i+1)}
+function calc(){
+  let grand=0;
+  const tally={polo:{},round:{},jacket:{}};
+  const count={polo:0,round:0,jacket:0,hat:0};
+  [...rows.children].forEach(tr=>{
+    let s=0;
+    ['polo','round','jacket'].forEach(k=>{
+      const v=tr.querySelector('.'+k).value;
+      if(v){s+=PRICE[k];count[k]++;tally[k][v]=(tally[k][v]||0)+1}
+    });
+    if(tr.querySelector('.hat').checked){s+=PRICE.hat;count.hat++}
+    tr.querySelector('.rowsum').textContent=fmt(s);
+    grand+=s;
+  });
+  document.getElementById('grand').textContent=fmt(grand);
+  renderSummary(count,tally,grand);
+}
+function sizeStr(obj){
+  const parts=SIZES.filter(s=>obj[s]).map(s=>`${s}=${obj[s]}`);
+  return parts.length?parts.join('  '):'-';
+}
+function renderSummary(count,tally,grand){
+  document.getElementById('summary').innerHTML=
+    `<h3>📊 สรุปยอดสั่งซื้อ (สำหรับสั่งของ)</h3>
+     <div class="line"><b>เสื้อคอปก:</b> ${count.polo} ตัว &nbsp;|&nbsp; ไซส์: ${sizeStr(tally.polo)}</div>
+     <div class="line"><b>เสื้อคอกลม:</b> ${count.round} ตัว &nbsp;|&nbsp; ไซส์: ${sizeStr(tally.round)}</div>
+     <div class="line"><b>แจ็กเก็ต:</b> ${count.jacket} ตัว &nbsp;|&nbsp; ไซส์: ${sizeStr(tally.jacket)}</div>
+     <div class="line"><b>หมวก:</b> ${count.hat} ใบ</div>
+     <div class="grand">💰 รวมเป็นเงินทั้งสิ้น ${fmt(grand)} บาท</div>`;
+}
+function clearAll(){if(confirm('ล้างรายชื่อทั้งหมด?')){rows.innerHTML='';for(let i=0;i<8;i++)addRow();}}
+// เริ่มต้น 8 แถวให้พิมพ์ได้เลย
+for(let i=0;i<8;i++)addRow();
+document.getElementById('date').value=new Date().toLocaleDateString('th-TH',{day:'2-digit',month:'2-digit',year:'numeric'});
+</script>
+</body>
+</html>
