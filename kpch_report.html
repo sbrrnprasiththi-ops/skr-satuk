@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>โปรแกรมรายงานกิจกรรมพัฒนาคุณภาพชีวิต (กพช.) - สกร.ระดับอำเภอสตึก</title>
+<style>
+  * { box-sizing:border-box; }
+  :root{
+    --purple:#5b3a8c; --purple2:#7e57c2; --lav:#efe7fb; --line:#e0d5f5;
+    --ink:#2a2340; --fs:32pt; --fs-label:28pt; --fs-legend:28pt;
+  }
+  body { font-family:"TH SarabunPSK","Sarabun","TH Sarabun New",sans-serif;
+    margin:0; font-size:20px; color:var(--ink);
+    background:radial-gradient(1200px 600px at 10% -10%, #ede3ff 0%, #f4f1f8 55%) fixed; }
+
+  /* COVER */
+  #coverPage { min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,#3f2568 0%,#7e57c2 55%,#b39ddb 100%); padding:24px; }
+  .cover-card { background:rgba(255,255,255,.97); border-radius:28px; max-width:620px; width:100%;
+    padding:52px 42px; text-align:center; box-shadow:0 26px 70px rgba(0,0,0,.35); }
+  .cover-emblem { width:110px; height:110px; border-radius:50%; margin:0 auto 20px;
+    background:linear-gradient(135deg,var(--purple),var(--purple2)); color:#fff; display:flex;
+    align-items:center; justify-content:center; font-size:52px; box-shadow:0 8px 20px rgba(91,58,140,.45); }
+  .cover-card .kp { font-size:18px; letter-spacing:4px; color:var(--purple2); font-weight:700; }
+  .cover-card h1 { font-size:40px; margin:10px 0 6px; color:#3a2360; line-height:1.25; }
+  .cover-card .sub { font-size:26px; color:var(--purple); font-weight:700; }
+  .cover-card .line { height:3px; width:84px; background:#d1bdf0; margin:22px auto; border-radius:3px; }
+  .cover-card .org { font-size:23px; color:#4a3b66; }
+  .cover-card .dev { font-size:20px; color:#6b5e85; margin-top:16px; }
+  .cover-card .dev b { color:var(--purple); }
+  .cover-start { margin-top:30px; background:linear-gradient(135deg,var(--purple),var(--purple2)); color:#fff;
+    border:none; border-radius:16px; padding:16px 48px; font-size:24px; font-weight:700;
+    font-family:inherit; cursor:pointer; box-shadow:0 10px 24px rgba(91,58,140,.4); transition:.15s; }
+  .cover-start:hover { transform:translateY(-2px); box-shadow:0 14px 30px rgba(91,58,140,.5); }
+
+  /* APP */
+  #appMain { display:none; }
+  header.app { background:linear-gradient(135deg,var(--purple),var(--purple2)); color:#fff;
+    padding:18px 24px; display:flex; align-items:center; gap:14px; box-shadow:0 4px 14px rgba(91,58,140,.25); }
+  header.app h1 { margin:0; font-size:30px; flex:1; font-weight:700; }
+  header.app button { background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.55);
+    border-radius:10px; padding:8px 16px; font-family:inherit; font-size:18px; cursor:pointer; font-weight:700; }
+
+  #tabBar { position:sticky; top:0; z-index:30; background:rgba(255,255,255,.96); backdrop-filter:blur(6px);
+    border-bottom:2px solid var(--line); padding:10px 12px; display:flex; flex-wrap:wrap; gap:8px;
+    align-items:center; box-shadow:0 4px 12px rgba(91,58,140,.08); }
+  #tabBar .grp { font-size:18px; color:#8a7cae; font-weight:700; margin:0 2px; }
+  #tabBar .sep { width:1px; height:26px; background:var(--line); margin:0 6px; }
+  #tabBar button { background:var(--lav); color:var(--purple); border:none; border-radius:10px;
+    padding:10px 18px; font-size:23px; font-family:inherit; cursor:pointer; font-weight:700; transition:.12s; }
+  #tabBar button:hover { transform:translateY(-1px); }
+  #tabBar button.kp { background:#fff1c9; color:#8a6d00; }
+  #tabBar button.active { background:linear-gradient(135deg,var(--purple),var(--purple2)); color:#fff;
+    box-shadow:0 4px 12px rgba(91,58,140,.35); }
+  #tabBar button.kp.active { background:linear-gradient(135deg,#f0940f,#f5b73c); color:#fff; }
+
+  .wrap { max-width:1040px; margin:0 auto; padding:22px 20px 130px; }
+  .panel { display:none; animation:fade .2s ease; }
+  .panel.active { display:block; }
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  fieldset { border:none; border-radius:20px; background:#fff;
+    margin:0 0 22px; padding:22px 24px 26px; box-shadow:0 6px 22px rgba(91,58,140,.10); }
+  legend { font-weight:700; color:#fff; padding:8px 20px; font-size:var(--fs-legend);
+    background:linear-gradient(135deg,var(--purple),var(--purple2)); border-radius:12px;
+    box-shadow:0 4px 12px rgba(91,58,140,.3); }
+  label { display:block; font-weight:700; margin:16px 0 6px; font-size:var(--fs-label); color:#3a2f57; }
+  input[type=text], input[type=number], input[type=date], textarea, select {
+    width:100%; padding:12px 16px; border:2px solid #ddd3f0; border-radius:14px;
+    font-family:inherit; font-size:var(--fs); background:#fff; color:var(--ink); transition:.12s; }
+  input:focus, textarea:focus, select:focus { outline:none; border-color:var(--purple2);
+    box-shadow:0 0 0 4px rgba(126,87,194,.18); }
+  textarea { min-height:120px; resize:vertical; line-height:1.5; }
+  .row { display:flex; gap:16px; flex-wrap:wrap; }
+  .row > div { flex:1; min-width:220px; }
+  table.grid { width:100%; border-collapse:collapse; margin-top:12px; }
+  table.grid th, table.grid td { border:1px solid #e5ddf5; padding:6px 8px; }
+  table.grid th { background:var(--lav); font-size:20px; color:var(--purple); }
+  table.grid input { border:none; padding:8px; font-size:26pt; }
+  table.grid input:focus { outline:2px solid var(--purple2); border-radius:6px; box-shadow:none; }
+  .btn { border:none; border-radius:14px; padding:14px 24px; font-size:22px;
+    font-family:inherit; cursor:pointer; font-weight:700; transition:.12s; }
+  .btn:hover { transform:translateY(-1px); }
+  .btn-add { background:var(--lav); color:var(--purple); padding:10px 18px; font-size:20px; }
+  .btn-del { background:#fbe4e4; color:#c0392b; border:none; border-radius:8px;
+    padding:6px 12px; cursor:pointer; font-weight:700; font-size:18px; }
+  .bar { position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--line);
+    padding:14px 18px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+    box-shadow:0 -4px 16px rgba(91,58,140,.12); z-index:50; }
+  .btn-export { background:linear-gradient(135deg,var(--purple),var(--purple2)); color:#fff; }
+  .btn-save { background:linear-gradient(135deg,#f0940f,#f5b73c); color:#fff; }
+  .btn-clear { background:#efeaf6; color:#6b5e85; }
+  .hint { font-size:20px; color:#8a7cae; margin:6px 0 0; }
+  .imgbox { display:flex; gap:12px; flex-wrap:wrap; margin-top:10px; }
+  .imgcard { border:1px solid var(--line); border-radius:12px; padding:10px; width:210px; background:#faf7ff; }
+  .imgcard img { width:100%; height:130px; object-fit:cover; border-radius:8px; }
+  .imgcard input { margin-top:8px; font-size:18px; padding:8px; }
+  #toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%); background:#2a2340; color:#fff;
+    padding:14px 26px; border-radius:24px; font-size:20px; opacity:0; transition:.3s;
+    pointer-events:none; z-index:99; box-shadow:0 8px 20px rgba(0,0,0,.3); }
+  #toast.show { opacity:1; }
+  .stu-block { border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:18px; background:#fbf9ff; }
+  .stu-block .nm { font-weight:700; color:var(--purple); font-size:24pt; margin-bottom:8px; }
+  table.evl { width:100%; border-collapse:collapse; font-size:20pt; }
+  table.evl th, table.evl td { border:1px solid #e5ddf5; padding:8px 8px; }
+  table.evl th { background:var(--lav); color:var(--purple); }
+  table.evl td.c { text-align:center; }
+  table.evl input[type=radio]{ width:26px; height:26px; }
+  .listline { padding:8px 0; border-bottom:1px dashed var(--line); font-size:24pt; }
+  .scoreItem { display:flex; align-items:center; gap:14px; margin:10px 0; }
+  .scoreItem span.t { flex:1; font-size:23pt; }
+  .scoreItem input { width:130px; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div id="coverPage">
+  <div class="cover-card">
+    <div class="cover-emblem">📘</div>
+    <div class="kp">กพช.</div>
+    <h1>โปรแกรมรายงาน<br>กิจกรรมพัฒนาคุณภาพชีวิต</h1>
+    <div class="sub">(กพช.)</div>
+    <div class="line"></div>
+    <div class="org">ศูนย์ส่งเสริมการเรียนรู้ระดับอำเภอสตึก</div>
+    <div class="org" style="font-size:16px;color:#6b5e85">สำนักงานส่งเสริมการเรียนรู้จังหวัดบุรีรัมย์</div>
+    <div class="dev">พัฒนาโดย <b>นางสาวสุวารี บรรณประสิทธิ์</b><br>ครูชำนาญการ</div>
+    <button class="cover-start" onclick="enterApp()">เริ่มใช้งาน →</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appMain">
+  <header class="app">
+    <h1>โปรแกรมรายงานกิจกรรมพัฒนาคุณภาพชีวิต (กพช.)</h1>
+    <button onclick="backToCover()">← หน้าปก</button>
+  </header>
+
+  <div id="tabBar">
+    <span class="grp">ข้อมูล:</span>
+    <button data-panel="general" class="active">ข้อมูลทั่วไป</button>
+    <button data-panel="project">โครงการ</button>
+    <button data-panel="students">รายชื่อนักศึกษา</button>
+    <span class="sep"></span>
+    <span class="grp">แบบฟอร์ม กพช.:</span>
+    <button data-panel="k1" class="kp">กพช.1</button>
+    <button data-panel="k2" class="kp">กพช.2</button>
+    <button data-panel="k3" class="kp">กพช.3</button>
+    <button data-panel="k4" class="kp">กพช.4</button>
+    <button data-panel="k5" class="kp">กพช.5</button>
+    <button data-panel="k6" class="kp">กพช.6</button>
+    <span class="sep"></span>
+    <button data-panel="images">รูปภาพ</button>
+  </div>
+
+  <div class="wrap">
+
+    <!-- GENERAL -->
+    <div class="panel active" id="panel-general">
+      <fieldset>
+        <legend>ข้อมูลสถานศึกษา / ผู้บริหาร</legend>
+        <div class="row">
+          <div><label>สถานศึกษา</label>
+            <input type="text" id="school" value="ศูนย์ส่งเสริมการเรียนรู้ระดับอำเภอสตึก"></div>
+          <div><label>ผู้อำนวยการ</label>
+            <input type="text" id="director" value="นายยุทธนา ชวติ"></div>
+        </div>
+        <div class="row">
+          <div><label>นายทะเบียน</label>
+            <input type="text" id="registrar" value="นางสาวสุวารี บรรณประสิทธิ์"></div>
+          <div><label>เลขที่หนังสือ</label>
+            <input type="text" id="docno" placeholder="ศธ 07057.20/..."></div>
+        </div>
+        <div class="row">
+          <div><label>ภาคเรียนที่</label><input type="text" id="term" placeholder="เช่น 1"></div>
+          <div><label>ปีการศึกษา</label><input type="text" id="year" placeholder="เช่น 2569"></div>
+        </div>
+        <label>ตราครุฑ (อัปโหลดไฟล์ภาพครุฑ ถ้าต้องการให้แสดงบนบันทึกข้อความ)</label>
+        <input type="file" id="garuda" accept="image/*" onchange="loadGaruda(event)">
+        <p class="hint">ถ้าไม่อัปโหลด ระบบจะเว้นกรอบ "ครุฑ" ไว้ให้วางเองในภายหลัง</p>
+      </fieldset>
+      <fieldset>
+        <legend>ครู / เจ้าหน้าที่ผู้รับผิดชอบ</legend>
+        <div class="row">
+          <div><label>ชื่อ-สกุล</label>
+            <input type="text" id="teacher" placeholder="เช่น นางสาวสุวารี บรรณประสิทธิ์"></div>
+          <div><label>ตำแหน่ง</label>
+            <input type="text" id="tpos" list="posList" placeholder="เลือกหรือพิมพ์">
+            <datalist id="posList">
+              <option value="ข้าราชการครู"><option value="ครู">
+              <option value="ครู ศรช."><option value="ครูผู้สอนคนพิการ">
+              <option value="เจ้าหน้าที่บันทึกข้อมูล">
+            </datalist></div>
+          <div><label>สังกัด</label>
+            <select id="affil">
+              <option>ศกร.ระดับตำบลสตึก</option><option>ศกร.ระดับตำบลนิคม</option>
+              <option>ศกร.ระดับตำบลทุ่งวัง</option><option>ศกร.ระดับตำบลเมืองแก</option>
+              <option>ศกร.ระดับตำบลหนองใหญ่</option><option>ศกร.ระดับตำบลร่อนทอง</option>
+              <option>ศกร.ระดับตำบลดอนมนต์</option><option>ศกร.ระดับตำบลชุมแสง</option>
+              <option>ศกร.ระดับตำบลท่าม่วง</option><option>ศกร.ระดับตำบลสะแก</option>
+              <option>ศกร.ระดับตำบลสนามชัย</option><option>ศกร.ระดับตำบลกระสัง</option>
+              <option>สกร.ระดับอำเภอสตึก</option>
+            </select></div>
+        </div>
+        <p class="hint">ข้อมูลนี้เป็นของแต่ละท่าน (ใครของใคร) จะแสดงในช่องลงชื่อทุกแบบฟอร์ม</p>
+      </fieldset>
+    </div>
+
+    <!-- PROJECT -->
+    <div class="panel" id="panel-project">
+      <fieldset>
+        <legend>เลือกโครงการ (ข้อมูลโครงการจะขึ้นเองทั้งหมด)</legend>
+        <label>เลือกโครงการสำเร็จรูป</label>
+        <select id="projectPick" onchange="fillProject()">
+          <option value="">-- เลือกโครงการ --</option>
+        </select>
+        <p class="hint">เลือกแล้วข้อมูลโครงการด้านล่างจะถูกเติมให้อัตโนมัติ (ทุกโครงการ 50 ชั่วโมง) ปรับแก้ได้</p>
+        <label>ชื่อโครงการ</label><input type="text" id="project">
+        <label>หลักการและเหตุผล</label><textarea id="principle"></textarea>
+        <label>วัตถุประสงค์</label><textarea id="objective"></textarea>
+        <label>เป้าหมาย</label><textarea id="target"></textarea>
+        <label>ขั้นตอน/แผนการปฏิบัติโครงการ</label><textarea id="steps"></textarea>
+        <label>ผลที่คาดว่าจะได้รับ</label><textarea id="expect"></textarea>
+        <div class="row">
+          <div><label>สถานที่ปฏิบัติกิจกรรม</label><input type="text" id="place"></div>
+          <div><label>จำนวนชั่วโมงที่อนุมัติ</label><input type="number" id="hours" value="50"></div>
+        </div>
+        <div class="row">
+          <div><label>วันที่เริ่ม</label><input type="date" id="dstart"></div>
+          <div><label>วันที่สิ้นสุด</label><input type="date" id="dend"></div>
+        </div>
+        <div class="row">
+          <div><label>ปัจจัย-เงิน</label><input type="text" id="fmoney"></div>
+          <div><label>ปัจจัย-วัสดุ</label><input type="text" id="fmat"></div>
+          <div><label>ปัจจัย-แรงงาน</label><input type="text" id="flabor"></div>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- STUDENTS -->
+    <div class="panel" id="panel-students">
+      <fieldset>
+        <legend>รายชื่อนักศึกษาผู้เข้าร่วมกิจกรรม</legend>
+        <p class="hint">รายชื่อนี้คือ "ผู้เข้าร่วมกิจกรรม" จะถูกนำไปสร้าง ใบลงชื่อ / สรุปชั่วโมง / กพช.1 / กพช.2 / กพช.6 (รายคน) ให้อัตโนมัติ</p>
+        <table class="grid" id="stuTable">
+          <thead><tr>
+            <th style="width:36px">ที่</th><th>ชื่อ-นามสกุล</th><th style="width:130px">รหัสประจำตัว</th>
+            <th style="width:90px">ระดับ</th><th style="width:80px">ชม.ที่ได้</th>
+            <th style="width:70px">ผ่าน</th><th style="width:44px"></th>
+          </tr></thead>
+          <tbody id="stuBody"></tbody>
+        </table>
+        <button class="btn btn-add" onclick="addStu()">+ เพิ่มทีละคน</button>
+        <div style="margin-top:18px;border-top:1px dashed var(--line);padding-top:14px">
+          <label>เพิ่มหลายรายชื่อพร้อมกัน — วางรายชื่อทีละบรรทัด</label>
+          <p class="hint">พิมพ์ได้ 2 รูปแบบ: "ชื่อ-สกุล" อย่างเดียว หรือ "ชื่อ-สกุล,รหัส,ระดับ" (คั่นด้วยเครื่องหมายจุลภาค)</p>
+          <textarea id="bulkNames" placeholder="สมชาย ใจดี
+สมหญิง รักเรียน,6312000123,ม.ปลาย
+มานี มีสุข"></textarea>
+          <button class="btn btn-add" style="margin-top:10px" onclick="addBulk()">+ เพิ่มรายชื่อทั้งหมดจากรายการ</button>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- กพช.1 -->
+    <div class="panel" id="panel-k1">
+      <fieldset>
+        <legend>กพช.1 — แบบลงทะเบียนกิจกรรม (รายบุคคล)</legend>
+        <p class="hint">สร้างให้อัตโนมัติ 1 ชุดต่อนักศึกษา 1 คน ตามรายชื่อผู้เข้าร่วม (ดึงข้อมูลชื่อ/รหัส/ระดับ จากแท็บรายชื่อนักศึกษา และครู/สังกัด จากแท็บข้อมูลทั่วไป)</p>
+        <div id="k1list"></div>
+      </fieldset>
+    </div>
+
+    <!-- กพช.2 -->
+    <div class="panel" id="panel-k2">
+      <fieldset>
+        <legend>กพช.2 — แบบประเมินตนเอง (รายบุคคล) ประเมินได้บนจอ</legend>
+        <p class="hint">เลือกระดับความรู้ความเข้าใจของนักศึกษาแต่ละคน (มาก / ปานกลาง / น้อย) ค่าที่เลือกจะไหลเข้าไฟล์ Word</p>
+        <div id="k2box"></div>
+      </fieldset>
+    </div>
+
+    <!-- กพช.3 -->
+    <div class="panel" id="panel-k3">
+      <fieldset>
+        <legend>กพช.3 — ผู้เสนอ / คณะกรรมการ / ที่ปรึกษา</legend>
+        <p class="hint">เนื้อหาโครงการดึงจากแท็บ "โครงการ" และรายชื่อสมาชิกดึงจากแท็บ "รายชื่อนักศึกษา"</p>
+        <div class="row">
+          <div><label>ผู้เสนอ/ประธานโครงการ (ชื่อ-สกุล)</label><input type="text" id="leaderName"></div>
+          <div><label>รหัสประจำตัว</label><input type="text" id="leaderId"></div>
+        </div>
+        <label style="margin-top:14px;color:#5b3a8c">คณะกรรมการพิจารณาและประเมินผล</label>
+        <div class="row">
+          <div><label>ประธานคณะกรรมการ</label><input type="text" id="com1"></div>
+          <div><label>กรรมการ</label><input type="text" id="com2"></div>
+          <div><label>กรรมการและเลขานุการ</label><input type="text" id="com3"></div>
+        </div>
+        <label style="margin-top:14px;color:#5b3a8c">ที่ปรึกษาโครงการ</label>
+        <div class="row">
+          <div><label>ที่ปรึกษา 1</label><input type="text" id="adv1"></div>
+          <div><label>ที่ปรึกษา 2</label><input type="text" id="adv2"></div>
+          <div><label>ที่ปรึกษา 3</label><input type="text" id="adv3"></div>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- กพช.4 -->
+    <div class="panel" id="panel-k4">
+      <fieldset>
+        <legend>กพช.4 — แบบรายงานผลสำเร็จของโครงการ (พิมพ์ได้บนจอ)</legend>
+        <p class="hint">พิมพ์ผลการปฏิบัติโครงการ ค่าที่พิมพ์จะไหลเข้าไฟล์ Word</p>
+        <label>4.1 การคิด / การวางแผน</label><textarea id="k4_1"></textarea>
+        <label>4.2 การดำเนินงาน / ขั้นตอนการดำเนินงาน</label><textarea id="k4_2"></textarea>
+        <label>4.3 การเรียนรู้และประสบการณ์ที่ได้รับ</label><textarea id="k4_3"></textarea>
+        <label>4.4 ปัญหาที่พบและการแก้ไข</label><textarea id="k4_4"></textarea>
+        <label>4.5 การนำไปใช้ในการพัฒนาคุณภาพชีวิต</label><textarea id="k4_5"></textarea>
+      </fieldset>
+    </div>
+
+    <!-- กพช.5 -->
+    <div class="panel" id="panel-k5">
+      <fieldset>
+        <legend>กพช.5 — แบบประเมินผลการปฏิบัติโครงการ (ประเมินได้บนจอ)</legend>
+        <label style="color:#5b3a8c">บันทึกความก้าวหน้าโครงการ</label>
+        <div class="row">
+          <div><label>ระยะที่ 1 ก่อนดำเนินโครงการ</label>
+            <select id="k5_p0"><option value="">-</option><option>ผ่าน</option><option>ปรับปรุง</option></select></div>
+          <div><label>เหตุผลประกอบ (ระยะ 1)</label><input type="text" id="k5_r0"></div>
+        </div>
+        <div class="row">
+          <div><label>ระยะที่ 2 ระหว่างดำเนินโครงการ</label>
+            <select id="k5_p1"><option value="">-</option><option>ผ่าน</option><option>ปรับปรุง</option></select></div>
+          <div><label>เหตุผลประกอบ (ระยะ 2)</label><input type="text" id="k5_r1"></div>
+        </div>
+        <div class="row">
+          <div><label>ระยะที่ 3 เสร็จสิ้นโครงการ</label>
+            <select id="k5_p2"><option value="">-</option><option>ผ่าน</option><option>ปรับปรุง</option></select></div>
+          <div><label>เหตุผลประกอบ (ระยะ 3)</label><input type="text" id="k5_r2"></div>
+        </div>
+        <label style="margin-top:12px;color:#5b3a8c">คะแนนการประเมิน (เต็ม 100)</label>
+        <div class="scoreItem"><span class="t">1. ประโยชน์ที่ผู้เรียน/ครอบครัว/ชุมชนได้รับ (เต็ม 20)</span><input type="number" id="k5_s0" max="20"></div>
+        <div class="scoreItem"><span class="t">2. การใช้กระบวนการกลุ่ม (เต็ม 20)</span><input type="number" id="k5_s1" max="20"></div>
+        <div class="scoreItem"><span class="t">3. ความยากง่ายในการดำเนินงาน (เต็ม 20)</span><input type="number" id="k5_s2" max="20"></div>
+        <div class="scoreItem"><span class="t">4. การมีส่วนร่วมของตนเอง/ครอบครัว/ชุมชน (เต็ม 10)</span><input type="number" id="k5_s3" max="10"></div>
+        <div class="scoreItem"><span class="t">5. ความเหมาะสมในการใช้เวลาปฏิบัติงาน (เต็ม 10)</span><input type="number" id="k5_s4" max="10"></div>
+        <div class="scoreItem"><span class="t">6. ปัจจัยที่เอื้อต่อความสำเร็จ (เต็ม 10)</span><input type="number" id="k5_s5" max="10"></div>
+        <div class="scoreItem"><span class="t">7. ความคิดริเริ่มสร้างสรรค์ (เต็ม 10)</span><input type="number" id="k5_s6" max="10"></div>
+        <label>ความเห็นของคณะกรรมการ</label><textarea id="k5_comment"></textarea>
+        <label>อนุมัติจำนวนชั่วโมง (ผู้บริหาร)</label><input type="number" id="k5_apprhours" value="50">
+      </fieldset>
+    </div>
+
+    <!-- กพช.6 -->
+    <div class="panel" id="panel-k6">
+      <fieldset>
+        <legend>กพช.6 — ใบแจ้งผลกิจกรรม (รายบุคคล)</legend>
+        <p class="hint">สร้างให้อัตโนมัติ 1 ชุดต่อนักศึกษา 1 คน ตามรายชื่อผู้เข้าร่วม (ผ่าน/ชั่วโมง ดึงจากแท็บรายชื่อนักศึกษา)</p>
+        <label>วันที่อนุมัติการผ่านกิจกรรม</label><input type="date" id="k6_date">
+        <div id="k6list" style="margin-top:10px"></div>
+      </fieldset>
+    </div>
+
+    <!-- IMAGES -->
+    <div class="panel" id="panel-images">
+      <fieldset>
+        <legend>ภาคผนวก — รูปภาพกิจกรรม</legend>
+        <input type="file" accept="image/*" multiple onchange="loadImages(event)">
+        <p class="hint">เลือกได้หลายรูป ใส่คำอธิบายใต้รูปได้ รูปจะไปอยู่หน้าภาคผนวกท้ายเล่ม</p>
+        <div class="imgbox" id="imgBox"></div>
+      </fieldset>
+    </div>
+
+  </div>
+
+  <div class="bar">
+    <button class="btn btn-save" onclick="saveData()">💾 บันทึกข้อมูล</button>
+    <button class="btn btn-clear" onclick="clearData()">🗑️ ล้างข้อมูล</button>
+    <button class="btn btn-export" onclick="exportWord()">📄 ส่งออกรูปเล่มส่ง ผอ. (Word)</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ================= PROJECT LIBRARY =================
+const PROJECTS = [
+{ title:"โครงการปรับปรุงพัฒนา สกร.ระดับอำเภอสตึก",
+  principle:"ศูนย์ส่งเสริมการเรียนรู้ระดับอำเภอสตึก เป็นสถานที่จัดการเรียนรู้และให้บริการแก่นักศึกษาและประชาชนในพื้นที่ การมีอาคารสถานที่ ภูมิทัศน์ และสภาพแวดล้อมที่สะอาด เป็นระเบียบ และสวยงาม ย่อมเอื้อต่อการเรียนรู้และสร้างบรรยากาศที่ดี นักศึกษาในฐานะส่วนหนึ่งของสถานศึกษาจึงควรมีส่วนร่วมในการปรับปรุงและพัฒนา เพื่อปลูกฝังจิตสาธารณะ ความรับผิดชอบ และการทำงานร่วมกันเป็นหมู่คณะ",
+  objective:"1. เพื่อปรับปรุงและพัฒนาอาคารสถานที่ ภูมิทัศน์ และสภาพแวดล้อมของ สกร.ระดับอำเภอสตึก ให้สะอาด เป็นระเบียบ และเอื้อต่อการเรียนรู้\n2. เพื่อส่งเสริมให้นักศึกษามีจิตสาธารณะ ความรับผิดชอบ และการทำงานเป็นกลุ่ม\n3. เพื่อสร้างความรักและความผูกพันระหว่างนักศึกษากับสถานศึกษา",
+  target:"นักศึกษา สกร.ระดับอำเภอสตึก เข้าร่วมกิจกรรมปรับปรุงและพัฒนาสถานศึกษา และพื้นที่ของ สกร.ระดับอำเภอสตึก ได้รับการปรับปรุงให้มีสภาพแวดล้อมที่ดีขึ้น",
+  steps:"1. ประชุมวางแผนและชี้แจงรายละเอียดโครงการ\n2. สำรวจสภาพพื้นที่และกำหนดจุดที่ต้องปรับปรุง\n3. แบ่งหน้าที่ความรับผิดชอบเป็นกลุ่ม\n4. ดำเนินการปรับปรุงพัฒนา เช่น ทำความสะอาด ปรับปรุงภูมิทัศน์ จัดสวน ซ่อมแซมและตกแต่งอาคารสถานที่\n5. สรุปผลและประเมินผลการดำเนินงาน",
+  expect:"1. สกร.ระดับอำเภอสตึก มีอาคารสถานที่และภูมิทัศน์ที่สะอาด สวยงาม เอื้อต่อการเรียนรู้\n2. นักศึกษามีจิตสาธารณะ ความรับผิดชอบ และทำงานร่วมกันเป็นหมู่คณะได้\n3. เกิดความรักและความผูกพันต่อสถานศึกษา" },
+{ title:"โครงการปรับปรุงพัฒนา ศกร.ระดับตำบล",
+  principle:"ศูนย์ส่งเสริมการเรียนรู้ระดับตำบล เป็นแหล่งจัดการเรียนรู้ที่ใกล้ชิดกับชุมชน เป็นศูนย์กลางในการพบกลุ่ม จัดกิจกรรม และให้บริการการศึกษาแก่นักศึกษาและประชาชนในตำบล การปรับปรุงและพัฒนาให้ ศกร.ระดับตำบล มีความพร้อม สะอาด เป็นระเบียบ และมีบรรยากาศที่เอื้อต่อการเรียนรู้ จึงเป็นสิ่งจำเป็น นักศึกษาควรมีส่วนร่วมในการดูแลและพัฒนาแหล่งเรียนรู้ของตนเอง",
+  objective:"1. เพื่อปรับปรุงและพัฒนาอาคารสถานที่และภูมิทัศน์ของ ศกร.ระดับตำบล ให้สะอาด เป็นระเบียบ และพร้อมใช้งาน\n2. เพื่อส่งเสริมให้นักศึกษามีส่วนร่วมในการดูแลแหล่งเรียนรู้ของชุมชน\n3. เพื่อปลูกฝังจิตสาธารณะและความรับผิดชอบต่อส่วนรวม",
+  target:"นักศึกษาของ ศกร.ระดับตำบล เข้าร่วมกิจกรรมปรับปรุงและพัฒนา และ ศกร.ระดับตำบล ได้รับการปรับปรุงให้มีสภาพที่ดีขึ้น เอื้อต่อการจัดการเรียนรู้",
+  steps:"1. ประชุมวางแผนและชี้แจงโครงการ\n2. สำรวจสภาพพื้นที่ของ ศกร.ระดับตำบล\n3. แบ่งหน้าที่และเตรียมวัสดุอุปกรณ์\n4. ดำเนินการปรับปรุง เช่น ทำความสะอาด จัดมุมเรียนรู้ ปรับปรุงภูมิทัศน์ และตกแต่งสถานที่\n5. สรุปและประเมินผลการดำเนินงาน",
+  expect:"1. ศกร.ระดับตำบล มีสภาพแวดล้อมที่สะอาด เป็นระเบียบ และพร้อมใช้จัดการเรียนรู้\n2. นักศึกษามีจิตสาธารณะและความรับผิดชอบต่อแหล่งเรียนรู้ของชุมชน\n3. ชุมชนได้แหล่งเรียนรู้ที่มีคุณภาพ" },
+{ title:"โครงการอาสาสมัคร สกร.ระดับอำเภอสตึก",
+  principle:"การเป็นอาสาสมัครและการมีจิตอาสา เป็นคุณลักษณะอันพึงประสงค์ที่ช่วยพัฒนาผู้เรียนให้เป็นพลเมืองที่ดีของสังคม การเปิดโอกาสให้นักศึกษาได้เข้ามาเป็นอาสาสมัครช่วยสนับสนุนการดำเนินงานและกิจกรรมต่าง ๆ ของ สกร.ระดับอำเภอสตึก จะช่วยฝึกฝนการทำงานเป็นทีม ความเสียสละ และความรับผิดชอบต่อส่วนรวม",
+  objective:"1. เพื่อส่งเสริมให้นักศึกษามีจิตอาสาและเป็นอาสาสมัครช่วยงานของ สกร.ระดับอำเภอสตึก\n2. เพื่อสนับสนุนการดำเนินงานและกิจกรรมของสถานศึกษาให้สำเร็จลุล่วง\n3. เพื่อฝึกการทำงานเป็นทีม ความเสียสละ และความรับผิดชอบ",
+  target:"นักศึกษาสมัครเป็นอาสาสมัครช่วยงานและกิจกรรมต่าง ๆ ของ สกร.ระดับอำเภอสตึก ตามที่ได้รับมอบหมาย",
+  steps:"1. ประชุมชี้แจงและรับสมัครอาสาสมัคร\n2. มอบหมายภารกิจตามความเหมาะสม เช่น ช่วยงานบริการ จัดเตรียมและดำเนินกิจกรรม ประชาสัมพันธ์ ดูแลความเรียบร้อย\n3. ปฏิบัติภารกิจอาสาสมัครตามที่ได้รับมอบหมาย\n4. สรุปผลและถอดบทเรียนการเป็นอาสาสมัคร",
+  expect:"1. นักศึกษามีจิตอาสาและความเสียสละต่อส่วนรวม\n2. การดำเนินงานและกิจกรรมของ สกร.ระดับอำเภอสตึก ได้รับการสนับสนุนและสำเร็จลุล่วง\n3. นักศึกษาทำงานเป็นทีมและมีความรับผิดชอบมากขึ้น" },
+{ title:"โครงการพัฒนาแหล่งเรียนรู้และภูมิทัศน์ในชุมชน",
+  principle:"แหล่งเรียนรู้ในชุมชน เช่น ศาลาประชาคม วัด ห้องสมุดชุมชน และพื้นที่สาธารณะ เป็นพื้นที่สำคัญในการเรียนรู้ตลอดชีวิตของประชาชน การพัฒนาและปรับปรุงภูมิทัศน์ของแหล่งเรียนรู้ให้สะอาด สวยงาม และพร้อมใช้งาน จะช่วยส่งเสริมการเรียนรู้ของคนในชุมชน นักศึกษาในฐานะสมาชิกของชุมชนควรมีส่วนร่วมในการพัฒนา",
+  objective:"1. เพื่อพัฒนาและปรับปรุงภูมิทัศน์ของแหล่งเรียนรู้ในชุมชนให้สะอาดและพร้อมใช้งาน\n2. เพื่อส่งเสริมให้นักศึกษามีส่วนร่วมในการพัฒนาชุมชน\n3. เพื่อปลูกจิตสำนึกในการดูแลรักษาพื้นที่สาธารณะของชุมชน",
+  target:"นักศึกษาเข้าร่วมพัฒนาแหล่งเรียนรู้และภูมิทัศน์ในชุมชน และแหล่งเรียนรู้ได้รับการปรับปรุงให้มีสภาพที่ดีขึ้น",
+  steps:"1. ประชุมวางแผนและประสานชุมชน\n2. สำรวจแหล่งเรียนรู้และกำหนดจุดที่ต้องพัฒนา\n3. แบ่งหน้าที่และเตรียมวัสดุอุปกรณ์\n4. ดำเนินการพัฒนา เช่น ทำความสะอาด ปรับปรุงภูมิทัศน์ ปลูกต้นไม้ จัดมุมเรียนรู้\n5. สรุปและประเมินผล",
+  expect:"1. แหล่งเรียนรู้และภูมิทัศน์ในชุมชนได้รับการพัฒนาให้สะอาดและพร้อมใช้งาน\n2. นักศึกษามีจิตสาธารณะและมีส่วนร่วมในการพัฒนาชุมชน\n3. ชุมชนมีแหล่งเรียนรู้ที่มีคุณภาพและน่าใช้บริการ" },
+{ title:"โครงการส่งเสริมการอ่านและการเรียนรู้ตลอดชีวิตในชุมชน",
+  principle:"การอ่านเป็นพื้นฐานสำคัญของการเรียนรู้ตลอดชีวิต การส่งเสริมนิสัยรักการอ่านและการเข้าถึงสื่อความรู้ของประชาชนในชุมชน จะช่วยยกระดับคุณภาพชีวิตและสร้างสังคมแห่งการเรียนรู้ นักศึกษาสามารถเป็นกำลังสำคัญในการรณรงค์และจัดกิจกรรมส่งเสริมการอ่านในชุมชนของตนเองได้",
+  objective:"1. เพื่อส่งเสริมนิสัยรักการอ่านและการเรียนรู้ตลอดชีวิตของประชาชนในชุมชน\n2. เพื่อให้นักศึกษาได้จัดกิจกรรมส่งเสริมการอ่านในชุมชน\n3. เพื่อสร้างสังคมแห่งการเรียนรู้ในระดับชุมชน",
+  target:"นักศึกษาจัดกิจกรรมส่งเสริมการอ่าน และประชาชนในชุมชนเข้าร่วมกิจกรรมและได้รับการส่งเสริมการอ่านและการเรียนรู้",
+  steps:"1. ประชุมวางแผนและออกแบบกิจกรรมส่งเสริมการอ่าน\n2. จัดเตรียมหนังสือ สื่อ และมุมส่งเสริมการอ่าน\n3. ดำเนินกิจกรรม เช่น มุมอ่านหนังสือ บ้านหนังสือชุมชน กิจกรรมเล่านิทาน รณรงค์รักการอ่าน\n4. สรุปและประเมินผลการจัดกิจกรรม",
+  expect:"1. ประชาชนในชุมชนมีนิสัยรักการอ่านและเรียนรู้มากขึ้น\n2. นักศึกษามีทักษะในการจัดกิจกรรมส่งเสริมการอ่าน\n3. เกิดสังคมแห่งการเรียนรู้ในชุมชน" },
+{ title:"โครงการจิตอาสาอนุรักษ์สิ่งแวดล้อมและทรัพยากรธรรมชาติ",
+  principle:"ปัญหาสิ่งแวดล้อมและการใช้ทรัพยากรธรรมชาติอย่างไม่เหมาะสม ส่งผลกระทบต่อคุณภาพชีวิตของคนในชุมชน การปลูกจิตสำนึกและส่งเสริมการมีส่วนร่วมของนักศึกษาในการอนุรักษ์สิ่งแวดล้อมและทรัพยากรธรรมชาติ จะช่วยสร้างชุมชนที่น่าอยู่และยั่งยืน นักศึกษาในฐานะจิตอาสาควรมีบทบาทในการดูแลสิ่งแวดล้อมของชุมชน",
+  objective:"1. เพื่อปลูกจิตสำนึกในการอนุรักษ์สิ่งแวดล้อมและทรัพยากรธรรมชาติ\n2. เพื่อส่งเสริมให้นักศึกษาเป็นจิตอาสาในการดูแลสิ่งแวดล้อมของชุมชน\n3. เพื่อสร้างสภาพแวดล้อมที่ดีและยั่งยืนในชุมชน",
+  target:"นักศึกษาเข้าร่วมกิจกรรมจิตอาสาอนุรักษ์สิ่งแวดล้อม และพื้นที่ในชุมชนได้รับการดูแลและฟื้นฟูสภาพแวดล้อม",
+  steps:"1. ประชุมวางแผนและให้ความรู้เรื่องการอนุรักษ์สิ่งแวดล้อม\n2. สำรวจพื้นที่และกำหนดกิจกรรม\n3. ดำเนินกิจกรรม เช่น เก็บขยะ ปลูกต้นไม้ คัดแยกขยะ ทำความสะอาดแหล่งน้ำและพื้นที่สาธารณะ\n4. รณรงค์สร้างจิตสำนึกในชุมชน\n5. สรุปและประเมินผล",
+  expect:"1. นักศึกษาและชุมชนมีจิตสำนึกในการอนุรักษ์สิ่งแวดล้อม\n2. พื้นที่ในชุมชนได้รับการดูแลและฟื้นฟูสภาพแวดล้อม\n3. เกิดชุมชนที่น่าอยู่และยั่งยืน" }
+];
+(function(){const sel=document.getElementById('projectPick');
+  PROJECTS.forEach((p,i)=>{const o=document.createElement('option');o.value=i;
+    o.textContent=(i+1)+". "+p.title;sel.appendChild(o);});})();
+function fillProject(){const i=document.getElementById('projectPick').value;if(i==="")return;
+  const p=PROJECTS[i];
+  document.getElementById('project').value=p.title;
+  document.getElementById('principle').value=p.principle;
+  document.getElementById('objective').value=p.objective;
+  document.getElementById('target').value=p.target;
+  document.getElementById('steps').value=p.steps;
+  document.getElementById('expect').value=p.expect;
+  document.getElementById('hours').value=50;
+  if(!document.getElementById('place').value.trim())
+    document.getElementById('place').value=document.getElementById('affil').value;}
+
+// ================= cover / tabs =================
+function enterApp(){document.getElementById('coverPage').style.display='none';
+  document.getElementById('appMain').style.display='block';window.scrollTo(0,0);}
+function backToCover(){document.getElementById('appMain').style.display='none';
+  document.getElementById('coverPage').style.display='flex';window.scrollTo(0,0);}
+function showPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelectorAll('#tabBar button').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(id==='k1')renderK1();
+  if(id==='k2')renderK2();
+  if(id==='k6')renderK6();
+  window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('#tabBar button[data-panel]').forEach(b=>
+  b.addEventListener('click',()=>showPanel(b.dataset.panel,b)));
+
+// ================= images & garuda =================
+let garudaData=""; let images=[];
+function loadGaruda(e){const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>garudaData=ev.target.result;r.readAsDataURL(f);}
+function loadImages(e){[...e.target.files].forEach(f=>{const r=new FileReader();
+  r.onload=ev=>{images.push({data:ev.target.result,caption:""});renderImgs();};r.readAsDataURL(f);});}
+function renderImgs(){const box=document.getElementById('imgBox');box.innerHTML='';
+  images.forEach((im,i)=>{const d=document.createElement('div');d.className='imgcard';
+    d.innerHTML=`<img src="${im.data}"><input type="text" placeholder="คำอธิบายภาพ"
+      value="${(im.caption||'').replace(/"/g,'&quot;')}" oninput="images[${i}].caption=this.value">
+      <button class="btn-del" style="margin-top:6px" onclick="images.splice(${i},1);renderImgs()">ลบ</button>`;
+    box.appendChild(d);});}
+
+// ================= student roster =================
+function addStu(name='',id='',lv='',hr='50',pass=true){
+  const tb=document.getElementById('stuBody');const tr=document.createElement('tr');
+  tr.innerHTML=`<td class="idx" style="text-align:center"></td>
+    <td><input type="text" value="${name}"></td><td><input type="text" value="${id}"></td>
+    <td><input type="text" value="${lv}"></td>
+    <td><input type="number" value="${hr}" style="text-align:center"></td>
+    <td style="text-align:center"><input type="checkbox" ${pass?'checked':''}></td>
+    <td style="text-align:center"><button class="btn-del" onclick="this.closest('tr').remove();renumber()">ลบ</button></td>`;
+  tb.appendChild(tr);renumber();}
+function addBulk(){
+  const el=document.getElementById('bulkNames');
+  const lines=(el.value||'').split('\n').map(l=>l.trim()).filter(l=>l);
+  let n=0;
+  lines.forEach(l=>{const p=l.split(',').map(x=>x.trim());
+    if(p[0]){addStu(p[0],p[1]||'',p[2]||'');n++;}});
+  el.value='';
+  if(n)toast('เพิ่มรายชื่อ '+n+' คนแล้ว ✓');
+  else toast('ไม่พบรายชื่อในช่อง');}
+function renumber(){document.querySelectorAll('#stuBody tr').forEach((tr,i)=>{
+  tr.querySelector('.idx').textContent=i+1;});}
+function getStudents(){return [...document.querySelectorAll('#stuBody tr')].map(tr=>{
+  const c=tr.querySelectorAll('input');
+  return{name:c[0].value,id:c[1].value,level:c[2].value,hours:c[3].value,pass:c[4].checked};
+}).filter(s=>s.name.trim()!=='');}
+
+// ================= กพช.2 per-student evaluation state =================
+let kpch2Data=[]; // [{ans:[10], pass:bool, add:'', sum:''}]
+const EVAL_ITEMS=["กิจกรรม กพช. มีประโยชน์เพียงใด",
+  "ความรู้เกี่ยวกับโครงสร้างและประโยชน์ของ กพช.",
+  "แนวทางการพัฒนาตนเอง ครอบครัว ชุมชน สังคม",
+  "ความรู้เกี่ยวกับกระบวนการกลุ่ม",
+  "กระบวนการคิดเป็น ทำเป็น แก้ปัญหาเป็น และการนำไปใช้",
+  "การประสานเครือข่าย",
+  "การเป็นผู้นำผู้ตาม",
+  "การวางแผน และประโยชน์ของการวางแผน",
+  "มนุษยสัมพันธ์",
+  "การเขียนโครงการ"];
+function ensureK2(i){if(!kpch2Data[i])kpch2Data[i]={ans:[],pass:false,add:'',sum:''};}
+function setK2(i,k,v){ensureK2(i);kpch2Data[i].ans[k]=v;}
+function setK2f(i,f,v){ensureK2(i);kpch2Data[i][f]=v;}
+function renderK2(){
+  const box=document.getElementById('k2box');const stu=getStudents();
+  if(!stu.length){box.innerHTML='<p class="hint">ยังไม่มีรายชื่อนักศึกษา กรุณาเพิ่มที่แท็บ "รายชื่อนักศึกษา" ก่อน</p>';return;}
+  box.innerHTML=stu.map((x,i)=>{ensureK2(i);const a=kpch2Data[i].ans;
+    const rows=EVAL_ITEMS.map((it,k)=>{
+      const rb=(lvl)=>`<input type="radio" name="k2_${i}_${k}" ${a[k]===lvl?'checked':''} onclick="setK2(${i},${k},'${lvl}')">`;
+      return `<tr><td class="c">${k+1}</td><td>${it}</td>
+        <td class="c">${rb('มาก')}</td><td class="c">${rb('ปานกลาง')}</td><td class="c">${rb('น้อย')}</td></tr>`;}).join("");
+    return `<div class="stu-block"><div class="nm">${i+1}. ${x.name}</div>
+      <table class="evl"><tr><th style="width:26px">ที่</th><th>รายการ</th>
+      <th style="width:54px">มาก</th><th style="width:66px">ปานกลาง</th><th style="width:54px">น้อย</th></tr>${rows}</table>
+      <div class="row" style="margin-top:8px">
+        <div style="flex:0 0 auto"><label style="display:inline">ส่วนสถานศึกษา:</label>
+          <label style="display:inline;font-weight:400"><input type="checkbox" ${kpch2Data[i].pass?'checked':''}
+            onchange="setK2f(${i},'pass',this.checked)"> ผ่าน</label></div>
+        <div><label>เพิ่มเติมในเรื่อง</label><input type="text" value="${(kpch2Data[i].add||'').replace(/"/g,'&quot;')}"
+          oninput="setK2f(${i},'add',this.value)"></div>
+        <div><label>สรุปผลการประเมิน</label><input type="text" value="${(kpch2Data[i].sum||'').replace(/"/g,'&quot;')}"
+          oninput="setK2f(${i},'sum',this.value)"></div>
+      </div></div>`;}).join("");
+}
+function renderK1(){const box=document.getElementById('k1list');const stu=getStudents();
+  box.innerHTML=stu.length?('<b>รายชื่อที่จะออกแบบฟอร์ม กพช.1 ('+stu.length+' คน):</b>'+
+    stu.map((x,i)=>`<div class="listline">${i+1}. ${x.name} &nbsp; รหัส ${x.id||'-'} &nbsp; ระดับ ${x.level||'-'}</div>`).join(""))
+    :'<p class="hint">ยังไม่มีรายชื่อนักศึกษา กรุณาเพิ่มที่แท็บ "รายชื่อนักศึกษา" ก่อน</p>';}
+function renderK6(){const box=document.getElementById('k6list');const stu=getStudents();
+  box.innerHTML=stu.length?('<b>รายชื่อที่จะออกใบแจ้งผล กพช.6 ('+stu.length+' คน):</b>'+
+    stu.map((x,i)=>`<div class="listline">${i+1}. ${x.name} &nbsp; ${x.pass?'ผ่าน':'ไม่ผ่าน'} &nbsp; ${x.hours||0} ชั่วโมง</div>`).join(""))
+    :'<p class="hint">ยังไม่มีรายชื่อนักศึกษา กรุณาเพิ่มที่แท็บ "รายชื่อนักศึกษา" ก่อน</p>';}
+
+// ================= helpers =================
+const PAGEBREAK=`<br clear=all style='page-break-before:always'>`;
+const TH_MONTH=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+"กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+function thaiDate(v){if(!v)return{full:"............................"};
+  const dt=new Date(v);return{full:`${dt.getDate()} ${TH_MONTH[dt.getMonth()]} ${dt.getFullYear()+543}`};}
+function val(id){const e=document.getElementById(id);return e?(e.value||"").trim():"";}
+function esc(t){return(t||"").replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function nl(t){return esc(t).replace(/\n/g,'<br>');}
+function u(t,n=60){return `<u>${t&&t.trim()?esc(t):"&nbsp;".repeat(n)}</u>`;}
+function disp(t,n=60){return t&&t.trim()?nl(t):"&nbsp;".repeat(n);}
+function teacherName(){return val('teacher')||".............................................";}
+function teacherTitle(){const p=val('tpos'),a=val('affil');return (p?p+" ":"")+a;}
+function regName(){return val('registrar')||"นางสาวสุวารี บรรณประสิทธิ์";}
+function chk(on){return on?"&#9745;":"&#9744;";}
+
+// ================= build report sections =================
+function buildSections(){
+  const s={school:val('school'),director:val('director'),term:val('term'),year:val('year'),
+    docno:val('docno'),affil:val('affil'),
+    project:val('project'),principle:val('principle'),objective:val('objective'),
+    target:val('target'),steps:val('steps'),expect:val('expect'),place:val('place'),
+    hours:val('hours'),fmoney:val('fmoney'),fmat:val('fmat'),flabor:val('flabor'),
+    leaderName:val('leaderName'),leaderId:val('leaderId'),
+    com1:val('com1'),com2:val('com2'),com3:val('com3'),
+    adv1:val('adv1'),adv2:val('adv2'),adv3:val('adv3')};
+  const ds=thaiDate(val('dstart')),de=thaiDate(val('dend')),k6d=thaiDate(val('k6_date'));
+  const stu=getStudents();const passN=stu.filter(x=>x.pass).length,failN=stu.length-passN;
+  const pb=PAGEBREAK;
+
+  const garuda=garudaData?`<img src="${garudaData}" style="height:62px">`
+    :`<div style="height:62px;width:62px;border:1px dashed #999;margin:0 auto;text-align:center;line-height:62px;font-size:13px;color:#999">ครุฑ</div>`;
+  const signTeacher=`<div style="text-align:center;margin-top:24px">
+    ลงชื่อ.....................................................<br>
+    (${esc(teacherName())})<br>${esc(teacherTitle())}</div>`;
+  const signDirector=`<div style="text-align:center;margin-top:30px">
+    .....................................................<br>
+    (${esc(s.director)})<br>ผู้อำนวยการ${esc(s.school)}</div>`;
+  const memoHead=(title)=>`<div style="text-align:center">${garuda}
+    <div style="font-size:26pt;font-weight:bold">บันทึกข้อความ</div></div>
+    <table style="width:100%;font-size:16pt"><tr>
+    <td style="width:50%"><b>ส่วนราชการ</b> ${esc(s.school)}</td>
+    <td style="width:25%"><b>ที่</b> ${u(s.docno,14)}</td>
+    <td style="width:25%"><b>วันที่</b> ${u('',16)}</td></tr></table>
+    <div style="font-size:16pt"><b>เรื่อง</b> ${esc(title)}</div>
+    <hr style="border:none;border-top:1.2px solid #000;margin:4px 0 10px">`;
+
+  const H={};
+  H.cover=`<div style="text-align:center;margin-top:90px">
+    <div style="font-size:30pt;font-weight:bold">รายงานผลการดำเนินงาน</div>
+    <div style="font-size:26pt;font-weight:bold;margin-top:10px">กิจกรรมพัฒนาคุณภาพชีวิต (กพช.)</div>
+    <div style="font-size:24pt;margin-top:26px">${esc(s.project)||"............................................"}</div>
+    <div style="font-size:20pt;margin-top:170px">${esc(s.affil)}</div>
+    <div style="font-size:20pt">${esc(s.school)}</div>
+    <div style="font-size:20pt">ภาคเรียนที่ ${esc(s.term)||"...."}/${esc(s.year)||"........"}</div></div>`;
+
+  H.preface=`<div style="text-align:center;font-size:22pt;font-weight:bold">คำนำ</div>
+    <div style="text-indent:2.5em;line-height:1.6;margin-top:14px">
+    รายงานฉบับนี้จัดทำขึ้นเพื่อสรุปผลการดำเนินงานกิจกรรมพัฒนาคุณภาพชีวิต (กพช.)
+    ${esc(s.project)||"................................"} ของนักศึกษา${esc(s.school)} ${esc(s.affil)}
+    ภาคเรียนที่ ${esc(s.term)||"...."}/${esc(s.year)||"........"}
+    ซึ่งเป็นกิจกรรมที่มุ่งส่งเสริมให้ผู้เรียนได้เรียนรู้และพัฒนาตนเอง ครอบครัว ชุมชน และสังคม
+    ผ่านกระบวนการคิดเป็น ทำเป็น แก้ปัญหาเป็น และการทำงานเป็นกลุ่ม</div>
+    <div style="text-indent:2.5em;line-height:1.6;margin-top:10px">
+    เนื้อหาในรายงานประกอบด้วยเอกสารการขออนุมัติโครงการ การรายงานผล แบบลงทะเบียนและประเมินตนเอง
+    แบบเสนอโครงการ การประเมินผล และภาพประกอบกิจกรรม
+    ผู้จัดทำหวังเป็นอย่างยิ่งว่ารายงานฉบับนี้จะเป็นประโยชน์ต่อผู้ที่เกี่ยวข้องต่อไป</div>
+    <div style="text-align:right;margin-top:30px">${esc(teacherName())}<br>ผู้จัดทำ</div>`;
+
+  const tocRows=[["คำนำ","ก"],["สารบัญ","ข"],
+    ["บันทึกข้อความ ขออนุมัติโครงการ","1"],["บันทึกข้อความ รายงานผลสำเร็จและขออนุมัติชั่วโมง","2"],
+    ["ใบลงชื่อปฏิบัติกิจกรรม","3"],["รายงานสรุปจำนวนชั่วโมงกิจกรรม","4"],
+    ["กพช.1 แบบลงทะเบียนกิจกรรม (รายบุคคล)","5"],["กพช.2 แบบประเมินตนเอง","6"],
+    ["กพช.3 แบบเสนอโครงการ","7"],["กพช.4 แบบรายงานผลสำเร็จของโครงการ","9"],
+    ["กพช.5 แบบประเมินผลการปฏิบัติโครงการ","10"],["กพช.6 ใบแจ้งผลกิจกรรม","12"],
+    ["ภาคผนวก ภาพกิจกรรม","13"]];
+  H.toc=`<div style="text-align:center;font-size:22pt;font-weight:bold">สารบัญ</div>
+    <table style="width:100%;font-size:16pt;margin-top:14px">
+    <tr><td></td><td style="text-align:right;font-weight:bold">หน้า</td></tr>
+    ${tocRows.map(r=>`<tr><td style="border-bottom:1px dotted #999">${r[0]}</td>
+    <td style="text-align:right;border-bottom:1px dotted #999;width:60px">${r[1]}</td></tr>`).join("")}
+    </table><p style="font-size:14pt;color:#666;margin-top:10px">
+    *เลขหน้าในสารบัญเป็นค่าเริ่มต้น แก้ไขให้ตรงเล่มจริงได้ใน Word</p>`;
+
+  H.memo1=memoHead("ขออนุมัติโครงการกิจกรรมพัฒนาคุณภาพชีวิต")+`
+    <div style="line-height:1.7">
+    <div style="font-size:16pt">เรียน  ผู้อำนวยการ${esc(s.school)}</div>
+    <div style="text-indent:3em;margin-top:8px">ด้วยนักศึกษา ${esc(s.affil)} จำนวน ${stu.length||"......"} คน
+    ได้เสนอโครงการกิจกรรมพัฒนาคุณภาพชีวิต โครงการ${u(s.project,55)} ระยะเวลา ...... วัน
+    ตั้งแต่วันที่ ${ds.full} ถึงวันที่ ${de.full} สถานที่ปฏิบัติกิจกรรม ณ ${u(s.place,55)}</div>
+    <div style="text-indent:3em;margin-top:8px">ในการนี้ ข้าพเจ้าได้ดำเนินการตรวจสอบแบบเสนอโครงการแล้ว
+    ปรากฏว่ามีความครบถ้วนถูกต้อง และมีความเหมาะสมที่จะปฏิบัติได้</div>
+    <div style="text-indent:3em;margin-top:8px">จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ</div></div>
+    ${signTeacher}
+    <div style="margin-top:24px;font-weight:bold">- อนุมัติ<br>- มอบคณะกรรมการตรวจสอบและประมาณค่าหน่วยกิจกรรม</div>
+    ${signDirector}`;
+
+  H.memo2=memoHead("รายงานผลสำเร็จโครงการกิจกรรมพัฒนาคุณภาพชีวิตและขออนุมัติชั่วโมงกิจกรรม")+`
+    <div style="line-height:1.7">
+    <div style="font-size:16pt">เรียน  ผู้อำนวยการ${esc(s.school)}</div>
+    <div style="text-indent:3em;margin-top:8px">ตามที่นักศึกษา ${esc(s.affil)} จำนวน ${stu.length||"......"} คน
+    ได้เสนอโครงการกิจกรรมพัฒนาคุณภาพชีวิต โครงการ${u(s.project,55)}
+    ตั้งแต่วันที่ ${ds.full} ถึงวันที่ ${de.full} สถานที่ปฏิบัติกิจกรรม ณ ${u(s.place,50)}
+    โดยได้รับอนุมัติชั่วโมงกิจกรรมจำนวน ${u(s.hours,6)} ชั่วโมง นั้น</div>
+    <div style="text-indent:3em;margin-top:8px">ในการนี้ การปฏิบัติกิจกรรมตามโครงการได้เสร็จสิ้นเรียบร้อยแล้ว
+    มีนักศึกษาเข้าร่วมและปฏิบัติกิจกรรมโดยผ่านกิจกรรมจำนวน ${passN} คน และไม่ผ่านกิจกรรมจำนวน ${failN} คน
+    และข้าพเจ้าได้ตรวจสอบเอกสารแล้ว มีความครบถ้วนถูกต้อง ทั้งนี้ได้แนบภาพถ่ายและใบลงชื่อมาด้วยแล้ว</div>
+    <div style="text-indent:3em;margin-top:8px">จึงเรียนมาเพื่อโปรดทราบ และอนุมัติชั่วโมงกิจกรรม</div></div>
+    ${signTeacher}
+    <div style="margin-top:24px;font-weight:bold">- ทราบ<br>- อนุมัติ<br>- มอบงานทะเบียนบันทึกผล</div>
+    ${signDirector}
+    <div style="margin-top:20px;font-weight:bold">สำหรับงานทะเบียน</div>
+    <div>- บันทึกผลแล้วเมื่อวันที่......เดือน...............พ.ศ............</div>
+    <div style="margin-top:8px">ลงชื่อ.........................................<br>
+    (${esc(regName())})<br>เจ้าหน้าที่งานทะเบียน</div>`;
+
+  // ATTENDANCE (no time/hours columns; participant names + signature)
+  const attRows=stu.map((x,i)=>`<tr><td style="text-align:center">${i+1}</td><td></td>
+    <td>${esc(x.name)}</td><td></td></tr>`).join("")
+    ||`<tr><td colspan=4 style="height:36px"></td></tr>`;
+  H.attend=`<div style="text-align:center;font-size:20pt;font-weight:bold">ใบลงชื่อปฏิบัติกิจกรรม กพช.</div>
+    <div>ชื่อโครงการ ${u(s.project,55)}</div><div>สถานที่ปฏิบัติกิจกรรม ${u(s.place,55)}</div>
+    <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:15pt" border="1">
+    <tr style="background:#f0f0f0;text-align:center"><th style="width:36px">ที่</th><th style="width:130px">วัน เดือน ปี</th>
+    <th>ชื่อ-นามสกุล</th><th style="width:200px">ลงชื่อ</th></tr>${attRows}</table>
+    <div style="text-align:center;margin-top:18px">ลงชื่อ..................................................ผู้ควบคุม<br>
+    (${esc(teacherName())}) ${esc(teacherTitle())}</div>`;
+
+  const sumRows=stu.map((x,i)=>`<tr><td style="text-align:center">${i+1}</td><td>${esc(x.name)}</td>
+    <td style="text-align:center">${esc(x.hours)}</td><td style="text-align:center">${x.pass?"ผ่าน":"ไม่ผ่าน"}</td></tr>`).join("")
+    ||`<tr><td colspan=4 style="height:36px"></td></tr>`;
+  H.summary=`<div style="text-align:center;font-size:20pt;font-weight:bold">รายงานสรุปจำนวนชั่วโมงกิจกรรม กพช.</div>
+    <div>ชื่อโครงการ ${u(s.project,55)}</div>
+    <div>จำนวนชั่วโมงที่ได้รับอนุมัติ ${u(s.hours,6)} ชั่วโมง</div>
+    <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:15pt" border="1">
+    <tr style="background:#f0f0f0;text-align:center"><th style="width:40px">ที่</th><th>ชื่อ-นามสกุล</th>
+    <th style="width:120px">จำนวนชั่วโมงที่ได้</th><th style="width:90px">หมายเหตุ</th></tr>${sumRows}</table>
+    <div style="text-align:center;margin-top:18px">ลงชื่อ..................................................ผู้สรุป<br>
+    (${esc(teacherName())}) ${esc(teacherTitle())}</div>`;
+
+  // กพช.1 per student
+  const form1=(x,i)=>`${i>0?pb:""}<div style="text-align:right;font-weight:bold">กพช. 1</div>
+    <div style="text-align:center;font-size:20pt;font-weight:bold">แบบลงทะเบียนกิจกรรมพัฒนาคุณภาพชีวิต (รายบุคคล)</div>
+    <div style="line-height:1.9;margin-top:10px">
+    <div>สถานศึกษา ${esc(s.school)}</div>
+    <div>ภาคเรียนที่ ${esc(s.term)||"...."} / ${esc(s.year)||"........"}</div>
+    <div>ชื่อ-สกุล ${u(x.name,40)} รหัสประจำตัวนักศึกษา ${u(x.id,16)}</div>
+    <div>ระดับ ${u(x.level,14)} กลุ่ม/${esc(s.affil)}</div>
+    <div>ครูรับผิดชอบ ${u(teacherName(),46)}</div></div>
+    <div style="text-align:center;margin-top:16px">ลงชื่อ.....................................................นักศึกษา<br>
+    (${esc(x.name)})<br>......../................./..........</div>
+    <table style="width:100%;margin-top:16px"><tr>
+    <td style="text-align:center;width:50%">ลงชื่อ.................................................ผู้รับลงทะเบียน<br>(.............................................)</td>
+    <td style="text-align:center;width:50%">ลงชื่อ...............................................นายทะเบียน<br>(${esc(regName())})</td></tr></table>`;
+  H.k1=stu.length?stu.map((x,i)=>form1(x,i)).join(""):form1({name:"",id:"",level:""},0);
+
+  // กพช.2 per student (uses on-screen evaluation)
+  const evalFull=["ท่านคิดว่า กิจกรรม กพช. มีประโยชน์เพียงใด",
+    "ท่านได้รับความรู้เกี่ยวกับโครงสร้างและประโยชน์ของ กพช. ระดับใด",
+    "ท่านมีความรู้ในเรื่องแนวทางการพัฒนาตนเอง ครอบครัว ชุมชน สังคมในระดับใด",
+    "ท่านได้รับความรู้เกี่ยวกับกระบวนการกลุ่มในระดับใด",
+    "ท่านได้รับความรู้ในเรื่องกระบวนการคิดเป็น ทำเป็น แก้ปัญหาเป็น และการนำไปใช้ในการดำเนินชีวิต",
+    "ท่านได้รับความรู้ในเรื่องการประสานเครือข่ายในระดับใด",
+    "ท่านได้รับความรู้ในเรื่องการเป็นผู้นำผู้ตามในระดับใด",
+    "ท่านมีความรู้ในเรื่องการวางแผน และประโยชน์ของการวางแผนในระดับใด",
+    "ท่านมีความรู้ในเรื่องมนุษยสัมพันธ์ในระดับใด",
+    "ท่านได้รับความรู้ในเรื่องการเขียนโครงการในระดับใด"];
+  const form2=(x,i)=>{const d=kpch2Data[i]||{ans:[],pass:false,add:'',sum:''};const a=d.ans||[];
+    const mark=(k,lvl)=>a[k]===lvl?"&#10004;":"";
+    const rows=evalFull.map((it,k)=>`<tr><td style="text-align:center">${k+1}</td><td>${it}</td>
+      <td style="text-align:center">${mark(k,'มาก')}</td><td style="text-align:center">${mark(k,'ปานกลาง')}</td>
+      <td style="text-align:center">${mark(k,'น้อย')}</td></tr>`).join("");
+    return `${i>0?pb:""}<div style="text-align:right;font-weight:bold">กพช. 2</div>
+    <div style="text-align:center;font-size:20pt;font-weight:bold">แบบประเมินตนเองกิจกรรมพัฒนาคุณภาพชีวิต</div>
+    <div style="font-weight:bold">ส่วนที่ 1 สำหรับผู้เรียน</div>
+    <div style="line-height:1.7">
+    <div>ชื่อสถานศึกษา ${esc(s.school)}</div>
+    <div>ชื่อ-สกุล ${u(x.name,38)} รหัสประจำตัวนักศึกษา ${u(x.id,16)}</div>
+    <div>ระดับการศึกษา ${u(x.level,14)} ${esc(s.affil)}</div>
+    <div>ครูผู้รับผิดชอบ ${u(teacherName(),44)}</div></div>
+    <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:14pt" border="1">
+    <tr style="background:#f0f0f0;text-align:center"><th style="width:26px">ที่</th><th>รายการ</th>
+    <th style="width:50px">มาก</th><th style="width:60px">ปานกลาง</th><th style="width:50px">น้อย</th></tr>${rows}</table>
+    <div style="text-align:center;margin-top:12px">ลงชื่อ.....................................................ผู้เรียน<br>(${esc(x.name)})</div>
+    <div style="margin-top:8px">ส่วนที่ 2 สำหรับสถานศึกษา &nbsp;${chk(d.pass)} ผ่าน &nbsp; เพิ่มเติมในเรื่อง ${u(d.add,26)}</div>
+    <div>สรุปผลการประเมินความรู้ ความเข้าใจ ${u(d.sum,44)}</div>
+    <div style="text-align:center;margin-top:10px">ลงชื่อ.....................................................ครูผู้รับผิดชอบ<br>(${esc(teacherName())})</div>`;};
+  H.k2=stu.length?stu.map((x,i)=>form2(x,i)).join(""):form2({name:"",id:"",level:""},0);
+
+  // กพช.3
+  const advList=[s.adv1,s.adv2,s.adv3].map((a,i)=>`${i+1}. ${u(a,55)}`).join("<br>");
+  const memberRows=stu.slice(0,12).map((x,i)=>
+    `<div>${i+1}. ชื่อ ${u(x.name,28)} รหัส ${u(x.id,14)} ระดับ ${u(x.level,12)}</div>`).join("");
+  H.k3=`<div style="text-align:right;font-weight:bold">กพช. 3</div>
+    <div style="text-align:center;font-size:20pt;font-weight:bold">แบบเสนอโครงการกิจกรรมพัฒนาคุณภาพชีวิต</div>
+    <div style="text-align:center">(สำหรับผู้เรียน)</div>
+    <div style="line-height:1.7;margin-top:8px">
+    <div>เสนอต่อสถานศึกษา ${esc(s.school)}</div>
+    <div><b>1. ชื่อโครงการ</b> ${disp(s.project,55)}</div>
+    <div><b>2. หลักการและเหตุผล</b><br>${disp(s.principle,70)}</div>
+    <div><b>3. วัตถุประสงค์</b><br>${disp(s.objective,70)}</div>
+    <div><b>4. เป้าหมาย</b><br>${disp(s.target,70)}</div>
+    <div><b>5. ขั้นตอน/แผนการปฏิบัติโครงการ</b><br>${disp(s.steps,70)}</div>
+    <div><b>6. สถานที่ดำเนินการ</b> ${disp(s.place,55)}</div>
+    <div><b>7. ระยะเวลาการดำเนินโครงการ</b> วันที่ ${ds.full} ถึงวันที่ ${de.full}</div>
+    <div><b>8. ปัจจัยในการดำเนินโครงการ</b><br>
+      &nbsp;&nbsp;8.1 เงิน ${u(s.fmoney,50)}<br>&nbsp;&nbsp;8.2 วัสดุ ${u(s.fmat,50)}<br>
+      &nbsp;&nbsp;8.3 แรงงาน ${u(s.flabor,48)}</div>
+    <div><b>9. ผลที่คาดว่าจะได้รับ</b><br>${disp(s.expect,70)}</div>
+    <div><b>10. ผู้รับผิดชอบโครงการ (ประธาน)</b> ชื่อ ${u(s.leaderName,28)} รหัส ${u(s.leaderId,14)}</div>
+    <div><b>11. รายชื่อสมาชิกโครงการ</b><br>${memberRows||"&nbsp;"}</div>
+    <div><b>12. ที่ปรึกษาโครงการ</b><br>${advList}</div></div>
+    <div style="text-align:center;margin-top:14px">ลงชื่อ..................................................ผู้เสนอ/ประธานโครงการ<br>
+    (${esc(s.leaderName)||"....................................."})</div>
+    ${pb}<div style="font-weight:bold">ส่วนที่ 2 สำหรับสถานศึกษา</div>
+    <div style="margin-top:6px">ความเห็นชอบของครูผู้รับผิดชอบกลุ่มนักศึกษาที่ทำกิจกรรม กพช.</div>
+    <div>${"&nbsp;".repeat(70)}</div>
+    <div style="text-align:center;margin-top:10px">ลงชื่อ.....................................................ครูผู้รับผิดชอบ<br>
+    (${esc(teacherName())})</div>
+    <div style="margin-top:10px">ความเห็นชอบของคณะกรรมการพิจารณาและประเมินผลการปฏิบัติโครงการ กพช.</div>
+    <div>&nbsp;&nbsp;&#9744; เห็นควรดำเนินการได้ โดยประมาณค่าหน่วยกิจกรรมโครงการนี้ จำนวน ${u(s.hours,6)} ชั่วโมง</div>
+    <div>&nbsp;&nbsp;&#9744; ควรปรับปรุงแก้ไข</div>
+    <div style="margin-top:14px;line-height:2.1">
+      ลงชื่อ.................................................ประธานคณะกรรมการฯ ( ${esc(s.com1)||"....................."} )<br>
+      ลงชื่อ.................................................กรรมการฯ ( ${esc(s.com2)||"....................."} )<br>
+      ลงชื่อ.................................................กรรมการและเลขานุการ ( ${esc(s.com3)||"....................."} )</div>
+    <table style="width:100%;margin-top:10px"><tr>
+    <td style="width:50%;text-align:center">ลงชื่อ........................................นายทะเบียน<br>(${esc(regName())})</td>
+    <td style="width:50%;text-align:center">ลงชื่อ........................................หัวหน้าสถานศึกษา<br>(${esc(s.director)})</td></tr></table>`;
+
+  // กพช.4 (typed)
+  const adv4=[s.adv1,s.adv2,s.adv3].map(a=>`<div style="text-align:center;margin-top:6px">
+    ลงชื่อ.....................................................ที่ปรึกษาโครงการ<br>(${esc(a)||"....................................."})</div>`).join("");
+  H.k4=`<div style="text-align:right;font-weight:bold">กพช. 4</div>
+    <div style="text-align:center;font-size:20pt;font-weight:bold">แบบรายงานผลสำเร็จของโครงการกิจกรรมพัฒนาคุณภาพชีวิต</div>
+    <div style="text-align:center">(สำหรับผู้เรียน)</div>
+    <div style="line-height:1.7;margin-top:8px">
+    <div><b>1. ชื่อโครงการที่ปฏิบัติ</b> ${disp(s.project,52)}</div>
+    <div><b>2. ระยะเวลาที่ปฏิบัติโครงการ</b> ตั้งแต่วันที่ ${ds.full} ถึงวันที่ ${de.full}</div>
+    <div><b>3. ผู้ปฏิบัติโครงการ</b> ประธาน: ${u(s.leaderName,28)} รหัส ${u(s.leaderId,14)} (รายกลุ่มแนบรายชื่อตามใบลงชื่อ)</div>
+    <div><b>4. ผลการปฏิบัติโครงการ</b><br>
+      &nbsp;&nbsp;4.1 การคิด/การวางแผน ${disp(val('k4_1'),46)}<br>
+      &nbsp;&nbsp;4.2 การดำเนินงาน/ขั้นตอนการดำเนินงาน ${disp(val('k4_2'),38)}<br>
+      &nbsp;&nbsp;4.3 การเรียนรู้และประสบการณ์ที่ได้รับ ${disp(val('k4_3'),38)}<br>
+      &nbsp;&nbsp;4.4 ปัญหาที่พบและการแก้ไข ${disp(val('k4_4'),42)}<br>
+      &nbsp;&nbsp;4.5 การนำไปใช้ในการพัฒนาคุณภาพชีวิต ${disp(val('k4_5'),38)}</div>
+    <div><b>5. ภาคผนวก</b> ภาพประกอบแสดงความก้าวหน้าและความสำเร็จของโครงการ (ดูภาคผนวก)</div></div>
+    <div style="text-align:center;margin-top:14px">ลงชื่อ..................................................ผู้ดำเนินงาน/ประธานโครงการ<br>
+    (${esc(s.leaderName)||"....................................."})</div>
+    <div style="margin-top:8px">ขอรับรองว่า ได้ให้คำแนะนำและให้คำปรึกษาตลอดระยะเวลาการดำเนินโครงการจริง</div>${adv4}`;
+
+  // กพช.5 (scores/ticks/comment from screen)
+  const sFull=[20,20,20,10,10,10,10];
+  const sItems=["ประโยชน์ที่ผู้เรียน/ครอบครัว/ชุมชนได้รับ","การใช้กระบวนการกลุ่ม","ความยากง่ายในการดำเนินงาน",
+    "การมีส่วนร่วมของตนเอง/ครอบครัว/ชุมชน","ความเหมาะสมในการใช้เวลาปฏิบัติงาน","ปัจจัยที่เอื้อต่อความสำเร็จ","ความคิดริเริ่มสร้างสรรค์"];
+  let total=0; const scoreRows=sItems.map((it,i)=>{const g=val('k5_s'+i);if(g)total+=Number(g)||0;
+    return `<tr><td style="text-align:center">${i+1}</td><td>${it}</td>
+    <td style="text-align:center">${sFull[i]}</td><td style="text-align:center">${esc(g)}</td><td></td></tr>`;}).join("");
+  const ph=(i)=>{const v=val('k5_p'+i);const r=val('k5_r'+i);
+    return `${v==='ผ่าน'?"&#9745;":"&#9744;"} ผ่าน &nbsp; ${v==='ปรับปรุง'?"&#9745;":"&#9744;"} ปรับปรุง &nbsp; เหตุผล ${u(r,30)}`;};
+  H.k5=`<div style="text-align:right;font-weight:bold">กพช. 5</div>
+    <div style="text-align:center;font-size:20pt;font-weight:bold">แบบประเมินผลการปฏิบัติโครงการกิจกรรมพัฒนาคุณภาพชีวิต</div>
+    <div style="line-height:1.7;margin-top:8px">
+    <div>ชื่อโครงการที่ประเมิน ${u(s.project,48)}</div>
+    <div>ชื่อประธานโครงการ ${u(s.leaderName,48)}</div>
+    <div>ระยะเวลาเริ่ม ${ds.full} &nbsp; วันสิ้นสุด ${de.full}</div>
+    <div>สถานที่ปฏิบัติโครงการ ${u(s.place,44)}</div></div>
+    <div style="margin-top:6px">บันทึกความก้าวหน้าโครงการ</div>
+    <div>ระยะที่ 1 ก่อนดำเนินโครงการ &nbsp; ${ph(0)}</div>
+    <div>ระยะที่ 2 ระหว่างดำเนินโครงการ &nbsp; ${ph(1)}</div>
+    <div>ระยะที่ 3 เสร็จสิ้นโครงการ &nbsp; ${ph(2)}</div>
+    <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:15pt" border="1">
+    <tr style="background:#f0f0f0;text-align:center"><th style="width:30px">ที่</th><th>รายการ</th>
+    <th style="width:60px">เต็ม</th><th style="width:60px">ได้</th><th style="width:80px">หมายเหตุ</th></tr>${scoreRows}
+    <tr style="font-weight:bold"><td colspan=2 style="text-align:center">รวม</td>
+    <td style="text-align:center">100</td><td style="text-align:center">${total||""}</td><td></td></tr></table>
+    <div style="margin-top:10px"><b>ความเห็นของคณะกรรมการ</b><br>${disp(val('k5_comment'),70)}</div>
+    <div style="margin-top:14px;line-height:2.1;text-align:center">
+      ลงชื่อ.....................................................ประธานคณะกรรมการ ( ${esc(s.com1)||"................"} )<br>
+      ลงชื่อ.....................................................คณะกรรมการ ( ${esc(s.com2)||"................"} )<br>
+      ลงชื่อ.....................................................คณะกรรมการและเลขานุการ ( ${esc(s.com3)||"................"} )</div>
+    <div style="margin-top:10px"><b>ผลการพิจารณาอนุมัติของผู้บริหารสถานศึกษา</b><br>- อนุมัติ จำนวน ${u(val('k5_apprhours'),6)} ชั่วโมง</div>
+    <div style="text-align:center;margin-top:10px">ลงชื่อ.....................................................ผู้อนุมัติ<br>
+    (${esc(s.director)})<br>ผู้อำนวยการ${esc(s.school)}</div>`;
+
+  // กพช.6 per student
+  const form6=(x,i)=>`${i>0?pb:""}<div style="text-align:right;font-weight:bold">กพช. 6</div>
+    <div style="text-align:center;font-size:20pt;font-weight:bold">ใบแจ้งผลกิจกรรมพัฒนาคุณภาพชีวิต</div>
+    <div style="text-align:center">(สำหรับสถานศึกษา)</div>
+    <div style="line-height:1.7;margin-top:8px">
+    <div>ชื่อสถานศึกษา ${esc(s.school)}</div>
+    <div>ชื่อ-สกุล ${u(x.name,38)} รหัสประจำตัวนักศึกษา ${u(x.id,16)}</div>
+    <div>ระดับการศึกษา ${u(x.level,14)} ${esc(s.affil)}</div>
+    <div>ครูผู้รับผิดชอบ ${u(teacherName(),44)}</div></div>
+    <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:15pt" border="1">
+    <tr style="background:#f0f0f0;text-align:center"><th>โครงการ/กิจกรรม</th><th style="width:70px">ผ่าน</th><th style="width:100px">จำนวนชั่วโมง</th></tr>
+    <tr><td>${esc(s.project)}</td><td style="text-align:center">${x.pass?"ผ่าน":"ไม่ผ่าน"}</td><td style="text-align:center">${esc(x.hours)}</td></tr>
+    <tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr>
+    <tr style="font-weight:bold"><td style="text-align:center">รวม</td><td></td><td style="text-align:center">${esc(x.hours)}</td></tr></table>
+    <div style="margin-top:8px">อนุมัติการผ่านกิจกรรม เมื่อวันที่ ${k6d.full}</div>
+    <table style="width:100%;margin-top:10px"><tr>
+    <td style="width:50%;text-align:center">ลงชื่อ........................................ผู้กรอก<br>(.......................................)</td>
+    <td style="width:50%;text-align:center">ลงชื่อ........................................ผู้ทาน<br>(.......................................)</td></tr></table>
+    <div style="text-align:center;margin-top:10px">ลงชื่อ.........................................นายทะเบียน<br>(${esc(regName())})</div>`;
+  H.k6=stu.length?stu.map((x,i)=>form6(x,i)).join(""):form6({name:"",id:"",level:"",hours:"",pass:true},0);
+
+  let appendix=`<div style="text-align:center;font-size:24pt;font-weight:bold;margin-top:120px">ภาคผนวก</div>
+    <div style="text-align:center;font-size:18pt">ภาพกิจกรรม</div>`;
+  if(images.length){
+    appendix+=pb+`<div style="text-align:center;font-size:18pt;font-weight:bold;margin-bottom:10px">ภาพกิจกรรม</div>`;
+    images.forEach((im,i)=>{appendix+=`<div style="text-align:center;margin-bottom:14px">
+      <img src="${im.data}" style="max-width:80%;max-height:300px">
+      <div style="font-size:15pt">ภาพที่ ${i+1} ${esc(im.caption)}</div></div>`;
+      if((i+1)%2===0&&i!==images.length-1)appendix+=pb;});}
+  H.appendix=appendix;
+
+  const order=['cover','preface','toc','memo1','memo2','attend','summary','k1','k2','k3','k4','k5','k6','appendix'];
+  return {order, html:H};
+}
+
+// ================= export Word =================
+function exportWord(){
+  const S=buildSections();
+  const body=S.order.map(k=>S.html[k]).join(PAGEBREAK);
+  const html=`<!DOCTYPE html><html xmlns:o='urn:schemas-microsoft-com:office:office'
+  xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+  <head><meta charset='utf-8'>
+  <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom>
+  <w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->
+  <style>@page{size:21cm 29.7cm;margin:2.5cm 2cm 2cm 3cm;}
+  body{font-family:"TH SarabunPSK","Sarabun","TH Sarabun New",sans-serif;font-size:16pt;}
+  div,p,td,th,span{font-family:"TH SarabunPSK","Sarabun","TH Sarabun New",sans-serif;}
+  table{font-size:16pt;}</style></head><body>${body}</body></html>`;
+  const blob=new Blob(['\ufeff'+html],{type:'application/msword'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  const pj=(val('project')||'รายงานกพช').replace(/[\\/:*?"<>|]/g,'').slice(0,40);
+  a.href=url;a.download=`รายงานกพช_${pj}.doc`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  toast('สร้างไฟล์ Word เรียบร้อยแล้ว ✓');}
+
+// ================= save / load =================
+const FIELD_IDS=['school','director','registrar','term','year','docno','teacher','tpos','affil',
+  'projectPick','project','principle','objective','target','steps','expect','place','hours',
+  'dstart','dend','fmoney','fmat','flabor','leaderName','leaderId','com1','com2','com3','adv1','adv2','adv3',
+  'k4_1','k4_2','k4_3','k4_4','k4_5','k5_p0','k5_r0','k5_p1','k5_r1','k5_p2','k5_r2',
+  'k5_s0','k5_s1','k5_s2','k5_s3','k5_s4','k5_s5','k5_s6','k5_comment','k5_apprhours','k6_date'];
+function collectState(){const o={};FIELD_IDS.forEach(id=>{const e=document.getElementById(id);
+  if(e)o[id]=e.value;});o.students=getStudents();o.images=images;o.garuda=garudaData;o.kpch2=kpch2Data;return o;}
+function saveData(){
+  try{localStorage.setItem('kpch_data',JSON.stringify(collectState()));toast('บันทึกข้อมูลเรียบร้อยแล้ว ✓');}
+  catch(err){try{const o=collectState();o.images=[];o.garuda="";
+    localStorage.setItem('kpch_data',JSON.stringify(o));
+    toast('บันทึกข้อมูลแล้ว (รูปภาพมีขนาดใหญ่เกินไป จึงไม่ได้บันทึกรูป)');}
+    catch(e2){toast('บันทึกไม่สำเร็จ: พื้นที่จัดเก็บเต็ม');}}}
+function loadData(){const raw=localStorage.getItem('kpch_data');if(!raw)return false;
+  try{const o=JSON.parse(raw);
+    FIELD_IDS.forEach(id=>{const e=document.getElementById(id);if(e&&o[id]!==undefined)e.value=o[id];});
+    document.getElementById('stuBody').innerHTML='';
+    (o.students||[]).forEach(x=>addStu(x.name,x.id,x.level,x.hours,x.pass));
+    if(!(o.students||[]).length)addStu();
+    images=o.images||[];renderImgs();garudaData=o.garuda||"";kpch2Data=o.kpch2||[];return true;}
+  catch(e){return false;}}
+function clearData(){if(!confirm('ต้องการล้างข้อมูลทั้งหมดและเริ่มใหม่หรือไม่?'))return;
+  localStorage.removeItem('kpch_data');location.reload();}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+// init
+if(!loadData()){ addStu(); }
+</script>
+</body>
+</html>
