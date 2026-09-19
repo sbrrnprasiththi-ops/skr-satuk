@@ -1,0 +1,28 @@
+<!-- ============================================================
+     การ์ดลิงก์สำหรับวางในหน้า index.html เดิมของเว็บ skr-satuk
+     คัดลอกบล็อก <a> ด้านล่างไปวางในส่วนที่รวมลิงก์เครื่องมืออื่น ๆ
+     (ไฟล์นี้ไม่ต้องอัปขึ้นเว็บ ใช้เป็นตัวอย่างเท่านั้น)
+     ============================================================ -->
+
+<a class="tool-card" href="assess-pnr/">
+  <span class="tool-card__icon">📋</span>
+  <span class="tool-card__body">
+    <strong>แบบประเมินผลการปฏิบัติงานพนักงานราชการ</strong>
+    <small>ครู กศน.ตำบล · ครูผู้สอนคนพิการ · บรรณารักษ์ · สมรรถนะ 5 ด้าน — พิมพ์รายงานตามแบบฟอร์มราชการ</small>
+  </span>
+</a>
+
+<style>
+/* ใส่เฉพาะกรณีหน้า index เดิมยังไม่มีสไตล์ของการ์ด */
+.tool-card{
+  display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit;
+  border:1px solid #e2e0ee;border-left:6px solid #7c3aed;border-radius:14px;
+  padding:14px 16px;margin:10px 0;background:#fff;
+  box-shadow:0 1px 3px rgba(31,27,46,.06);transition:.15s;
+}
+.tool-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(124,58,237,.18)}
+.tool-card__icon{font-size:30px;line-height:1}
+.tool-card__body{display:flex;flex-direction:column;gap:3px}
+.tool-card__body strong{font-size:18px;color:#5b2c8d}
+.tool-card__body small{font-size:15px;color:#6b6880}
+</style>
